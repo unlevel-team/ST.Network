@@ -120,7 +120,7 @@ var DataChannel = function () {
 
 			var dc = this;
 
-			if (dc.state != dc.CONSTANTS.States.DCstate_Config) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Config) {
 				throw "Bad channel state";
 			}
 		}
@@ -135,7 +135,7 @@ var DataChannel = function () {
 
 			var dc = this;
 
-			if (dc.state != dc.CONSTANTS.States.DCstate_Config || dc.state != dc.CONSTANTS.States.DCstate_Stop) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Config || dc.state !== dc.CONSTANTS.States.DCstate_Stop) {
 				throw "Bad channel state";
 			}
 
@@ -152,7 +152,7 @@ var DataChannel = function () {
 
 			var dc = this;
 
-			if (dc.state != dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
 
@@ -183,14 +183,14 @@ var DataChannel = function () {
 
 			var dc = this;
 
-			if (dc.state == dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state === dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
 
-			dc.state == dc.CONSTANTS.States.DCstate_Working;
+			dc.state = dc.CONSTANTS.States.DCstate_Working;
 
 			dc._mainLoop = setInterval(function () {
-				if (dc.state == dc.CONSTANTS.States.DCstate_Working) {
+				if (dc.state === dc.CONSTANTS.States.DCstate_Working) {
 					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Tick); // Emit event MainLoop_Tick
 				} else {
 						dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Stop); // Emit event MainLoop_Stop
@@ -246,12 +246,12 @@ var DataChannelsManager = function () {
 
 			var dcm = this;
 
-			if (dch.config.id == undefined || dch.config.id == null) {
+			if (dch.config.id === undefined || dch.config.id === null) {
 				throw "Channel needs ID.";
 			}
 
 			var dchSearch = dcm.getDataChannelByID(dch.config.id);
-			if (dchSearch.dataChannel != null) {
+			if (dchSearch.dataChannel !== null) {
 				throw "Duplicated channel ID.";
 			}
 
@@ -271,13 +271,13 @@ var DataChannelsManager = function () {
 			var dcm = this;
 
 			var dchSearch = dcm.getDataChannelByID(dchID);
-			if (dchSearch.dataChannel == null) {
+			if (dchSearch.dataChannel === null) {
 				throw "Channel not found.";
 			}
 
 			var dataChannel = dchSearch.dataChannel;
 
-			if (dataChannel.state == dcm.CONSTANTS.States.DCstate_Working) {
+			if (dataChannel.state === dcm.CONSTANTS.States.DCstate_Working) {
 				throw "Bad channel state.";
 			}
 
@@ -300,7 +300,7 @@ var DataChannelsManager = function () {
 			var _i = 0;
 			for (_i = 0; _i < dcm.channelsList.length; _i++) {
 
-				if (dcm.channelsList[_i].config.id == dchID) {
+				if (dcm.channelsList[_i].config.id === dchID) {
 					dch = dcm.channelsList[_i];
 					break;
 				}
@@ -340,7 +340,7 @@ var DataChannelsManager = function () {
 
 			var messages = msgList.filter(function (msg, _i, _items) {
 
-				if (msg.typeExtra == typeExtra) {
+				if (msg.typeExtra === typeExtra) {
 					return true;
 				}
 			});

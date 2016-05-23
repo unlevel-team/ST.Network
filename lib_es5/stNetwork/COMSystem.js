@@ -265,15 +265,15 @@ var COMSystem = function () {
 
 			var tbSearch = comSYS.getBindByID(tbind.bindID);
 
-			if (synchro == undefined) {
+			if (synchro === undefined) {
 				synchro = true;
 			}
 
-			if (options == undefined) {
+			if (options === undefined) {
 				options = [];
 			}
 
-			if (tbSearch.tbind != null) {
+			if (tbSearch.tbind !== null) {
 				throw "Bind ID already exists.";
 			}
 

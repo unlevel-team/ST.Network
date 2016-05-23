@@ -60,7 +60,7 @@ var TBind_Morse = function (_ThingBind) {
 
 			var tbind = this;
 
-			if (tbind.state != tbind.CONSTANTS.States.State_Ready) {
+			if (tbind.state !== tbind.CONSTANTS.States.State_Ready) {
 				throw "Bad Bind state";
 			}
 
@@ -77,7 +77,7 @@ var TBind_Morse = function (_ThingBind) {
 
 			var tbind = this;
 
-			if (tbind.state != tbind.CONSTANTS.States.State_Working) {
+			if (tbind.state !== tbind.CONSTANTS.States.State_Working) {
 				throw "Bad Bind state";
 			}
 
@@ -117,7 +117,7 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 			var dc = tbind.target;
 			var sensor = tbind.source;
 
-			if (tbind.options == undefined || tbind.options.bindID == undefined) {
+			if (tbind.options === undefined || tbind.options.bindID === undefined) {
 				throw "This bind requires an ID.";
 			}
 
@@ -126,7 +126,7 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 			// Define bind function
 			tbind._bindFunction = function (data) {
 
-				if (tbind.state != tbind.CONSTANTS.States.State_Working) {
+				if (tbind.state !== tbind.CONSTANTS.States.State_Working) {
 					return;
 				}
 
@@ -161,11 +161,11 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 			var dc = tbind.source;
 			var actuator = tbind.target;
 
-			if (tbind.options == undefined || tbind.options.bindID == undefined) {
+			if (tbind.options === undefined || tbind.options.bindID === undefined) {
 				throw "This bind requires an ID.";
 			}
 
-			if (tbind.options.comSYS == undefined) {
+			if (tbind.options.comSYS === undefined) {
 				throw "This bind requires a comSYS.";
 			}
 
@@ -176,7 +176,7 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 			// Define bind function
 			tbind._bindFunction = function (data) {
 
-				if (tbind.state != tbind.CONSTANTS.States.State_Working) {
+				if (tbind.state !== tbind.CONSTANTS.States.State_Working) {
 					return;
 				}
 
@@ -264,15 +264,15 @@ var COMSystem_Morse = function (_COMSystem) {
 			var comSYS = this;
 			var _config = comSYS.config;
 
-			if (_config.role == undefined) {
+			if (_config.role === undefined) {
 				throw "role is required.";
 			}
 
-			if (_config.sensorManager == undefined) {
+			if (_config.sensorManager === undefined) {
 				throw "sensorManager is required.";
 			}
 
-			if (_config.actuatorsManager == undefined) {
+			if (_config.actuatorsManager === undefined) {
 				throw "actuatorsManager is required.";
 			}
 
@@ -290,7 +290,7 @@ var COMSystem_Morse = function (_COMSystem) {
 
 				default:
 					throw "Bad Role.";
-					break;
+				//				break;
 			}
 		}
 
@@ -305,7 +305,7 @@ var COMSystem_Morse = function (_COMSystem) {
 			var comSYS = this;
 			var _config = comSYS.config;
 
-			if (_config.controlChannel == undefined) {
+			if (_config.controlChannel === undefined) {
 				throw "controlChannel is required.";
 			}
 
@@ -336,7 +336,7 @@ var COMSystem_Morse = function (_COMSystem) {
 
 			var comSYS = this;
 
-			if (dc.config._comSYS_Morse != undefined && dc.config._comSYS_Morse != null) {
+			if (dc.config._comSYS_Morse !== undefined && dc.config._comSYS_Morse !== null) {
 				return;
 			}
 
@@ -356,7 +356,7 @@ var COMSystem_Morse = function (_COMSystem) {
 
 			var comSYS = this;
 
-			if (dc.config._comSYS_Morse == undefined || dc.config._comSYS_Morse == null) {
+			if (dc.config._comSYS_Morse === undefined || dc.config._comSYS_Morse === null) {
 				return;
 			}
 
@@ -377,7 +377,7 @@ var COMSystem_Morse = function (_COMSystem) {
 			var comSYS = this;
 
 			var messages = msg.filter(function (_msg, _i) {
-				if (_msg.typeExtra != undefined && _msg.typeExtra == comSYS.CONSTANTS.Config.Version) {
+				if (_msg.typeExtra !== undefined && _msg.typeExtra === comSYS.CONSTANTS.Config.Version) {
 					return true;
 				}
 			});
