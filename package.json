@@ -1,6 +1,6 @@
 {
-  "name": "st_network",
-  "version": "0.0.1-alpha0.build001",
+  "name": "st.network",
+  "version": "0.0.1-alpha00-build001",
   "description": "ST Network",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
@@ -10,12 +10,15 @@
     "toES5": "gulp babel"
   },
   "files": [
+	".gitignore",
     "lib/",
-    "lib_es5/"
+    "lib_es5/",
+    "readme.md",
+    "gulpfile.js"
   ],
-  "main": "lib_es5/stNetwork/STNetwork.js",
+  "main": "lib/stNetwork/STNetwork.js",
   "keywords": [
-    "st_network",
+    "st.network",
     "st",
     "IoT",
     "SomeThings",
