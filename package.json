@@ -1,0 +1,37 @@
+{
+  "name": "st_network",
+  "version": "0.0.1",
+  "description": "ST Network",
+  "author": "Unlevel Team <unlevelteam@gmail.com>",
+  "scripts": {
+
+  },
+  "main": "lib/stNetwork/STNetwork.js",
+  "keywords": [
+    "st_network",
+    "st",
+    "IoT",
+    "SomeThings",
+    "sensor",
+    "actuator",
+    "network"
+  ],
+  "dependencies": {
+	"portscanner" : "~1.0.0",
+    "express" : "^4.13.4",
+    "socket.io " : "~1.4",
+    "body-parser" : "~1.15",
+    "source-map-support": "*"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "*",
+    "gulp": "*",
+    "gulp-babel": "*",
+    "gulp-sourcemaps": "*"
+  },
+  "preferGlobal": false,
+  "private": true,
+  "subdomain": "st_network",
+  "analyze": true,
+  "license": "MIT"
+}
