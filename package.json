@@ -3,13 +3,16 @@
   "version": "0.0.1",
   "description": "ST Network",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
+  "readme": "ST Network",
+  "readmeFilename": "readme.md",
   "scripts": {
-
+    "gulp": "gulp",
+    "toES5": "gulp babel"
   },
   "files": [
     "lib/"
   ],
-  "main": "lib/stNetwork/STNetwork.js",
+  "main": "libES5/stNetwork/STNetwork.js",
   "keywords": [
     "st_network",
     "st",
@@ -32,8 +35,6 @@
     "gulp-babel": "*",
     "gulp-sourcemaps": "*"
   },
-  "preferGlobal": false,
-  "private": false,
   "analyze": true,
   "license": "MIT"
 }
