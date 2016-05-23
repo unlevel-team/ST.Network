@@ -10,9 +10,10 @@
     "toES5": "gulp babel"
   },
   "files": [
-    "lib/"
+    "lib/",
+    "lib_es5/"
   ],
-  "main": "libES5/stNetwork/STNetwork.js",
+  "main": "lib_es5/stNetwork/STNetwork.js",
   "keywords": [
     "st_network",
     "st",
