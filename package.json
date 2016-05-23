@@ -6,6 +6,9 @@
   "scripts": {
 
   },
+  "files": [
+    "lib/"
+  ],
   "main": "lib/stNetwork/STNetwork.js",
   "keywords": [
     "st_network",
@@ -30,8 +33,7 @@
     "gulp-sourcemaps": "*"
   },
   "preferGlobal": false,
-  "private": true,
-  "subdomain": "st_network",
+  "private": false,
   "analyze": true,
   "license": "MIT"
 }
