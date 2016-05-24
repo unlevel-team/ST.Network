@@ -298,12 +298,13 @@ var DataChannelsManager = function () {
 			var dch = null;
 
 			var _i = 0;
-			for (_i = 0; _i < dcm.channelsList.length; _i++) {
 
-				if (dcm.channelsList[_i].config.id === dchID) {
-					dch = dcm.channelsList[_i];
-					break;
-				}
+			_i = dcm.channelsList.map(function (x) {
+				return x.config.id;
+			}).indexOf(dchID);
+
+			if (_i !== -1) {
+				dch = dcm.channelsList[_i];
 			}
 
 			return {
