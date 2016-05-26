@@ -11,33 +11,11 @@
 
 */
 
-/**
- * Node net service constants
- */
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var NodeNetService_CONSTANTS = {
-
-	"Messages": {
-		"getNetInfo": "Get Net Info",
-		"NetInfo": "Net Info",
-
-		"createDataChannel": "Create DC",
-		"DataChannelCreated": "DC Created",
-		"deleteDataChannel": "Delete DC",
-		"DataChannelDeleted": "DC Deleted",
-
-		"getDataChannelOptions": "get DC Options",
-		"DataChannelOptions": "DC Options",
-		"SetDCOptions": "Set DC Options",
-		"DCOptionsUpdated": "DC Options Updated"
-
-	}
-
-};
+var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
 
 /**
  * Node net service
@@ -50,7 +28,7 @@ var NodeNetService = function () {
 		this.node = node;
 		this.nodeNetManager = nodeNetManager;
 
-		this.CONSTANTS = NodeNetService_CONSTANTS;
+		this.CONSTANTS = NETservices_CONSTANTS;
 	}
 
 	_createClass(NodeNetService, [{
@@ -81,23 +59,8 @@ var NodeNetService = function () {
 			});
 
 			// Map event DataChannelAdded
-			nnetm.eventEmitter.on(nnetm.CONSTANTS.Events.DataChannelAdded, function (channelID) {
-
-				var channelSearch = nnetm.getDataChannelByID(channelID);
-				var dch = channelSearch.dataChannel;
-
-				var message = {
-					"channelID": dch.config.id,
-					"_chnID": dch.config._dchID,
-					"mode": dch.config.mode,
-					"socketPort": dch.config.socketPort,
-					"netLocation": dch.config.netLocation
-				};
-
-				nodeCtrlSrv.socket.emit(nnets.CONSTANTS.Messages.DataChannelCreated, message); // Emit message DataChannelCreated
-
-				console.log('<*> ST NodeNetService.DataChannelCreated'); // TODO REMOVE DEBUG LOG
-				console.log(message); // TODO REMOVE DEBUG LOG
+			nnetm.eventEmitter.on(nnetm.CONSTANTS.Events.DataChannelAdded, function (data) {
+				nnets._event_DataChannelAdded(data, nnets);
 			});
 
 			// Map event DataChannelRemoved
@@ -191,6 +154,41 @@ var NodeNetService = function () {
 			});
 
 			console.log('<*> ST NodeNetService._mapControlMessages'); // TODO REMOVE DEBUG LOG
+		}
+
+		/**
+   * Event DataChannelAdded
+   */
+
+	}, {
+		key: "_event_DataChannelAdded",
+		value: function _event_DataChannelAdded(data, nnets) {
+
+			if (nnets === undefined) {
+				nnets = this;
+			}
+
+			var nnetm = nnets.nodeNetManager;
+			var node = nnetm.config._node;
+			var nodeCtrlSrv = node.nodeControlService;
+
+			var channelID = data;
+
+			var channelSearch = nnetm.getDataChannelByID(channelID);
+			var dch = channelSearch.dataChannel;
+
+			var message = {
+				"channelID": dch.config.id,
+				"_chnID": dch.config._dchID,
+				"mode": dch.config.mode,
+				"socketPort": dch.config.socketPort,
+				"netLocation": dch.config.netLocation
+			};
+
+			nodeCtrlSrv.socket.emit(nnets.CONSTANTS.Messages.DataChannelCreated, message); // Emit message DataChannelCreated
+
+			console.log('<*> ST NodeNetService.DataChannelCreated'); // TODO REMOVE DEBUG LOG
+			console.log(message); // TODO REMOVE DEBUG LOG
 		}
 
 		/**
@@ -354,5 +352,10 @@ var NodeNetService = function () {
 	return NodeNetService;
 }();
 
-module.exports = NodeNetService;
+var NodeNetService_Lib = {
+	"NodeNetService": NodeNetService
+
+};
+
+module.exports = NodeNetService_Lib;
 //# sourceMappingURL=NodeNetService.js.map

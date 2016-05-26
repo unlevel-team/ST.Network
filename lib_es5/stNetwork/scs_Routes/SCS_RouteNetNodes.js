@@ -79,7 +79,7 @@ var SCS_RouteNetNodes = function () {
 						"channelID": dch.config.id,
 						"type": dch.config.type,
 						"mode": dch.config.mode,
-						"state": dch.config.state
+						"state": dch.state
 					};
 					_response.dataChannels.push(dchData);
 				});
@@ -108,7 +108,7 @@ var SCS_RouteNetNodes = function () {
 						"channelID": dch.config.id,
 						"type": dch.config.type,
 						"mode": dch.config.mode,
-						"state": dch.config.state
+						"state": dch.state
 					};
 					_response.dataChannels.push(dchData);
 				});

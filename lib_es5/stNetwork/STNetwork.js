@@ -11,7 +11,7 @@ var DC_SocketIO_Lib = require("./DC_SocketIO.js");
 var SCS_RouteNet = require("./scs_routes/SCS_RouteNet.js");
 var COMSystem_Lib = require("./COMSystem.js");
 
-var services = require('./services/stNETservices');
+var services = require('./services/stNETservices_lib.js');
 
 var stNetwork_Lib = {
 

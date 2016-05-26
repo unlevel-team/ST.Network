@@ -71,7 +71,8 @@ var SCS_RouteNetServer = function () {
 					var dchData = {
 						"channelID": dch.config.id,
 						"type": dch.config.type,
-						"mode": dch.config.mode
+						"mode": dch.config.mode,
+						"state": dch.config.state
 					};
 					_response.dataChannels.push(dchData);
 				});
