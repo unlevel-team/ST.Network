@@ -1,6 +1,6 @@
 {
   "name": "st.network",
-  "version": "0.0.1-alpha00-build002",
+  "version": "0.0.1-alpha00-build003",
   "description": "ST Network",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
@@ -11,6 +11,7 @@
   },
   "files": [
 	".gitignore",
+	"package.json",
     "lib/",
     "lib_es5/",
     "readme.md",
