@@ -28,6 +28,7 @@ var COMSystem_CONSTANTS = {
 
 	"States": {
 		"State_Config": "config",
+		"State_ConfigNet": "configNet",
 		"State_Ready": "ready",
 		"State_Working": "working",
 		"State_Stop": "stop"
@@ -355,23 +356,30 @@ var COMSystem = function () {
 				"bindID": bindID
 			});
 		}
-	}], [{
-		key: 'getCOMSystem',
-		value: function getCOMSystem(config) {
-
-			var COMSystem_Morse = require('./comSYS_Morse/COMsys_Morse.js').COMSystem_Morse;
-			var comSYS = new COMSystem_Morse(config);
-			return comSYS;
-		}
 	}]);
 
 	return COMSystem;
 }();
 
+/**
+ * Get COMSystem
+ */
+
+
+function getCOMSystem(config) {
+
+	var _getCOMSystem = require('./comSYS_Morse/COMsys_Morse.js').getCOMSystem;
+	var comSYS = _getCOMSystem(config);
+
+	return comSYS;
+}
+
 var comsystem_Lib = {
 	"COMSystem_CONSTANTS": COMSystem_CONSTANTS,
 	"ThingBind": ThingBind,
-	"COMSystem": COMSystem
+	"COMSystem": COMSystem,
+
+	"getCOMSystem": getCOMSystem
 };
 
 module.exports = comsystem_Lib;

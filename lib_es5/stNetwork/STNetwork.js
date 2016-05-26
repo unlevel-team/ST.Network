@@ -23,7 +23,7 @@ var stNetwork_Lib = {
 
 	"SCS_RouteNet": SCS_RouteNet,
 
-	"COMSystem": COMSystem_Lib.COMSystem,
+	"COMSystem": COMSystem_Lib,
 
 	"Services": services
 
