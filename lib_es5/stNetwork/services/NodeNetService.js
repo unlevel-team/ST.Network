@@ -75,6 +75,11 @@ var NodeNetService = function () {
 				console.log('<*> ST NodeNetService.DataChannelDeleted'); // TODO REMOVE DEBUG LOG
 				console.log(message); // TODO REMOVE DEBUG LOG
 			});
+
+			// Map event ChannelInitialized
+			nnetm.eventEmitter.on(nnetm.CONSTANTS.Events.ChannelInitialized, function (data) {
+				nnets._event_ChannelInitialized(data, nnets);
+			});
 		}
 
 		/**
@@ -103,6 +108,7 @@ var NodeNetService = function () {
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.deleteDataChannel);
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.getDataChannelOptions);
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.SetDCOptions);
+				socket.removeAllListeners(nnets.CONSTANTS.Messages.initDC);
 
 				//			_node.config._nodesNetService = null;
 				nnets._mapControlMessages_OK = null;
@@ -131,7 +137,11 @@ var NodeNetService = function () {
 
 			// Map message deleteDataChannel
 			socket.on(nnets.CONSTANTS.Messages.deleteDataChannel, function (msg) {
-				nnets._msg_deleteDataChannel(msg, socket, msg);
+				nnets._msg_deleteDataChannel(msg, socket, {
+					"node": _node,
+					"nodeID": nodeConfig.nodeID,
+					"channelID": msg.channelID
+				});
 			});
 
 			// Map message getDataChannelOptions
@@ -150,6 +160,15 @@ var NodeNetService = function () {
 					"nodeID": nodeConfig.nodeID,
 					"channelID": msg.channelID,
 					"options": msg.options
+				});
+			});
+
+			// Map message initDC
+			socket.on(nnets.CONSTANTS.Messages.initDC, function (msg) {
+				nnets._msg_initDC(msg, socket, {
+					"node": _node,
+					"nodeID": nodeConfig.nodeID,
+					"channelID": msg.channelID
 				});
 			});
 
@@ -185,9 +204,40 @@ var NodeNetService = function () {
 				"netLocation": dch.config.netLocation
 			};
 
-			nodeCtrlSrv.socket.emit(nnets.CONSTANTS.Messages.DataChannelCreated, message); // Emit message DataChannelCreated
+			// Emit message DataChannelCreated
+			nodeCtrlSrv.socket.emit(nnets.CONSTANTS.Messages.DataChannelCreated, message);
 
-			console.log('<*> ST NodeNetService.DataChannelCreated'); // TODO REMOVE DEBUG LOG
+			console.log('<*> ST NodeNetService._event_DataChannelAdded'); // TODO REMOVE DEBUG LOG
+			console.log(message); // TODO REMOVE DEBUG LOG
+		}
+
+		/**
+   * Event ChannelInitialized
+   */
+
+	}, {
+		key: "_event_ChannelInitialized",
+		value: function _event_ChannelInitialized(data, nnets) {
+
+			if (nnets === undefined) {
+				nnets = this;
+			}
+
+			var nnetm = nnets.nodeNetManager;
+			var node = nnetm.config._node;
+			var nodeCtrlSrv = node.nodeControlService;
+
+			var dch = data.dataChannel;
+
+			var message = {
+				"channelID": dch.config.id,
+				"_chnID": dch.config._dchID
+			};
+
+			// Emit message DCInitialized
+			nodeCtrlSrv.socket.emit(nnets.CONSTANTS.Messages.DCInitialized, message);
+
+			console.log('<*> ST NodeNetService._event_ChannelInitialized'); // TODO REMOVE DEBUG LOG
 			console.log(message); // TODO REMOVE DEBUG LOG
 		}
 
@@ -256,7 +306,7 @@ var NodeNetService = function () {
 			console.log(options); // TODO REMOVE DEBUG LOG
 
 			try {
-				nnetm.removeDataChannel(options.channelID);
+				nnetm.removeDataChannelFromNode(options.channelID);
 			} catch (e) {
 				// TODO: handle exception
 				console.log('<EEE> ST NodeNetService._msg_deleteDataChannel'); // TODO REMOVE DEBUG LOG
@@ -292,7 +342,8 @@ var NodeNetService = function () {
 					"options": {
 						"type": dch.config.type,
 						"mode": dch.config.mode,
-						"state": dch.config._netState,
+						"state": dch.config.state,
+						"netstate": dch.config._netState,
 						"loopTime": dch.config.loopTime,
 						"netLocation": dch.config.netLocation,
 						"socketPort": dch.config.socketPort
@@ -344,6 +395,41 @@ var NodeNetService = function () {
 				socket.emit(nnets.CONSTANTS.Messages.DCOptionsUpdated, message); // Emit message DCOptionsUpdated
 			} catch (e) {
 				console.log('<EEE> ST NodeNetService._msg_SetDCOptions'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+			}
+		}
+
+		/**
+   * Message initDC
+   */
+
+	}, {
+		key: "_msg_initDC",
+		value: function _msg_initDC(msg, socket, options) {
+
+			var nnets = this;
+			var nnetm = nnets.nodeNetManager;
+
+			console.log('<*> ST NodeNetService._msg_initDC'); // TODO REMOVE DEBUG LOG
+			console.log(msg); // TODO REMOVE DEBUG LOG
+
+			try {
+
+				var dchSearch = nnetm.getDataChannelByID(options.channelID);
+				if (dchSearch.dataChannel === null) {
+					throw "Data channel not found";
+				}
+
+				var dch = dchSearch.dataChannel;
+
+				try {
+
+					dch.initDataChannel();
+				} catch (e) {
+					throw "Cannot initialize data channel ." + e;
+				}
+			} catch (e) {
+				console.log('<EEE> ST NodeNetService._msg_initDC'); // TODO REMOVE DEBUG LOG
 				console.log(e); // TODO REMOVE DEBUG LOG
 			}
 		}

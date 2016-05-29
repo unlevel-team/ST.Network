@@ -17,13 +17,21 @@ var NETservices_CONSTANTS = {
 
 		"createDataChannel": "Create DC",
 		"DataChannelCreated": "DC Created",
+
 		"deleteDataChannel": "Delete DC",
 		"DataChannelDeleted": "DC Deleted",
 
 		"getDataChannelOptions": "get DC Options",
 		"DataChannelOptions": "DC Options",
+
 		"SetDCOptions": "Set DC Options",
 		"DCOptionsUpdated": "DC Options Updated",
+
+		"initDC": "Init DC",
+		"DCInitialized": "DC Initialized",
+
+		"closeDC": "Close DC",
+		"DCClosed": "DC Closed",
 
 		"startDataChannel": "Start DC",
 		"DataChannelStarted": "DC started",

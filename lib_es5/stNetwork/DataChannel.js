@@ -40,10 +40,13 @@ var DataChannel_CONSTANTS = {
 
 	"Events": {
 		"ChannelInitialized": "Channel initialized",
+		"ChannelClosed": "Channel closed",
+
 		"ChannelStart": "Channel start",
 		"ChannelStarted": "Channel started",
 		"ChannelStop": "Channel stop",
 		"ChannelStopped": "Channel stopped",
+
 		"ClientConnected": "Client Connected",
 		"ClientDisconnected": "Client Disconnected",
 
@@ -126,6 +129,21 @@ var DataChannel = function () {
 		}
 
 		/**
+   * Close data channel
+   */
+
+	}, {
+		key: 'closeDataChannel',
+		value: function closeDataChannel() {
+
+			var dc = this;
+
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
+				throw "Bad channel state";
+			}
+		}
+
+		/**
    * Start data channel
    */
 
@@ -152,7 +170,7 @@ var DataChannel = function () {
 
 			var dc = this;
 
-			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Working) {
 				throw "Bad channel state";
 			}
 
@@ -277,13 +295,14 @@ var DataChannelsManager = function () {
 
 			var dataChannel = dchSearch.dataChannel;
 
-			if (dataChannel.state === dcm.CONSTANTS.States.DCstate_Working) {
+			if (dataChannel.state !== dataChannel.CONSTANTS.States.DCstate_Config) {
 				throw "Bad channel state.";
 			}
 
 			dcm.channelsList.splice(dchSearch.position, 1);
 
-			dcm.eventEmitter.emit(dcm.CONSTANTS.Events.DataChannelRemoved, dchID); // Emit event DataChannelRemoved
+			// Emit event DataChannelRemoved
+			dcm.eventEmitter.emit(dcm.CONSTANTS.Events.DataChannelRemoved, dchID);
 		}
 
 		/**
@@ -319,6 +338,7 @@ var DataChannelsManager = function () {
 			var dataChannel = null;
 
 			switch (config.type) {
+
 				case DataChannel_CONSTANTS.Config.DCtype_socketio:
 					var DC_SocketIO = require('./DC_SocketIO.js');
 					dataChannel = new DC_SocketIO(config);

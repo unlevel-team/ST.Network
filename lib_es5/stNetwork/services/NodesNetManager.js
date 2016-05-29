@@ -37,6 +37,9 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 		nnetm.CONSTANTS.Events.DeleteDCOnNode = "Delete DC on Node";
 		nnetm.CONSTANTS.Events.SetDCOptionsOnNode = "Set DC options on Node";
+
+		nnetm.CONSTANTS.Events.initDCOnNode = "Init DC on Node";
+
 		return _this;
 	}
 
@@ -60,7 +63,7 @@ var NodesNetManager = function (_DataChannelsManager) {
 				'_netState': nnetm.CONSTANTS.States.DCstate_Config
 			};
 
-			// · · · ^^^ · · ·  ^^^ · · ·  ^^^ · · · ^^^ · · ·  ^^^ · |\/|···
+			// ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ ~ ~  ^^^ ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ |\/|~~~
 			// Extra config parameters
 			if (config !== undefined && config !== null) {
 
@@ -80,11 +83,11 @@ var NodesNetManager = function (_DataChannelsManager) {
 					dch_Config._synchro = config._synchro;
 				}
 			}
-			// · · · ^^^ · · ·  ^^^ · · ·  ^^^ · · · ^^^ · · ·  ^^^ · |/\|···
+			// ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ ~ ~  ^^^ ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ |/\|~~~
 
 			console.log('<*> ST NodesNetManager.addDataChannelToNode'); // TODO REMOVE DEBUG LOG
-			console.log(' <·> Channel ID: ' + dch_Config._dchID); // TODO REMOVE DEBUG LOG
-			console.log(' <·> Node ID:' + dch_Config._nodeID); // TODO REMOVE DEBUG LOG
+			console.log(' <~> Channel ID: ' + dch_Config._dchID); // TODO REMOVE DEBUG LOG
+			console.log(' <~> Node ID:' + dch_Config._nodeID); // TODO REMOVE DEBUG LOG
 
 			try {
 				var dch = DataChannelsManager.get_DataChannel(dch_Config);
@@ -160,6 +163,28 @@ var NodesNetManager = function (_DataChannelsManager) {
 		}
 
 		/**
+   * Initialize DC on Node
+   */
+
+	}, {
+		key: "initializeDConNode",
+		value: function initializeDConNode(dch, node) {
+
+			var nnetm = this;
+
+			console.log('<*> ST NodesNetManager.initializeDConNode'); // TODO REMOVE DEBUG LOG
+
+			if (dch.state !== dch.CONSTANTS.States.DCstate_Config) {
+				throw "Bad channel state";
+			}
+
+			// Emit event initDCOnNode
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.initDCOnNode, { "node": dch.config._node,
+				"channelID": dch.config._dchID
+			});
+		}
+
+		/**
    * Create data channel from node
    *
    * Synchronization tasks
@@ -219,7 +244,7 @@ var NodesNetManager = function (_DataChannelsManager) {
 			var nnetm = this;
 
 			console.log('<*> ST NodesNetManager._deleteDConServer'); // TODO REMOVE DEBUG LOG
-			console.log(' <·> ' + dch.config.id); // TODO REMOVE DEBUG LOG
+			console.log(' <~> ' + dch.config.id); // TODO REMOVE DEBUG LOG
 
 			try {
 				nnetm.removeDataChannelFromNode(node, dch.config._dchID);
@@ -239,7 +264,9 @@ var NodesNetManager = function (_DataChannelsManager) {
 		value: function _deleteDConNode(channelID, stNode) {
 
 			var nnetm = this;
-			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.DeleteDCOnNode, { "node": stNode, "channelID": channelID }); // Emit event DeleteDCOnNode
+
+			// Emit event DeleteDCOnNode
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.DeleteDCOnNode, { "node": stNode, "channelID": channelID });
 		}
 	}]);
 

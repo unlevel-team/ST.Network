@@ -56,7 +56,7 @@ var ServerNetManager = function (_DataChannelsManager) {
 				_netState: snetm.CONSTANTS.Config.DCstate_Config
 			};
 
-			// · · · ^^^ · · ·  ^^^ · · ·  ^^^ · · · ^^^ · · ·  ^^^ · |\/|···
+			// ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ ~ ~  ^^^ ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ |\/|~~~
 			// Extra config parameters
 			if (config !== undefined && config !== null) {
 
@@ -72,7 +72,7 @@ var ServerNetManager = function (_DataChannelsManager) {
 					dch_Config.netLocation = config.netLocation;
 				}
 			}
-			// · · · ^^^ · · ·  ^^^ · · ·  ^^^ · · · ^^^ · · ·  ^^^ · |/\|···
+			// ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ ~ ~  ^^^ ~ ~ ~ ^^^ ~ ~ ~  ^^^ ~ |/\|~~~
 
 			var dch = this.get_DataChannel(dch_Config);
 

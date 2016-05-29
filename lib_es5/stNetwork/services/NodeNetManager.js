@@ -80,7 +80,74 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 			var dch = DataChannelsManager.get_DataChannel(dch_Config);
 
+			nnetm._mapDCcontrolEvents(dch);
+
 			nnetm.addDataChannel(dch);
+		}
+
+		/**
+   * Remove data channel from node
+   * 
+   * @dc could be DC.id or DC object
+   */
+
+	}, {
+		key: 'removeDataChannelFromNode',
+		value: function removeDataChannelFromNode(dc) {
+
+			var nnetm = this;
+
+			var dataChannel = null;
+
+			// check for DC.id or DC object
+			if (dc.config !== undefined) {
+				dataChannel = dc;
+			} else {
+				var dchSearch = nnetm.getDataChannelByID(dc);
+				if (dchSearch.dataChannel === null) {
+					throw "Channel not found.";
+				}
+				dataChannel = dchSearch.dataChannel;
+			}
+
+			var channelID = dataChannel.config.id;
+
+			if (dataChannel.state !== dataChannel.CONSTANTS.States.DCstate_Config) {
+				throw "Bad channel state.";
+			}
+
+			nnetm._unMapDCcontrolEvents(dataChannel);
+
+			nnetm.removeDataChannel(channelID);
+		}
+
+		/**
+   * Map control events for DC
+   */
+
+	}, {
+		key: '_mapDCcontrolEvents',
+		value: function _mapDCcontrolEvents(dch) {
+
+			var nnetm = this;
+
+			// Map event ChannelInitialized
+			dch.eventEmitter.on(dch.CONSTANTS.Events.ChannelInitialized, function (data) {
+				nnetm._event_ChannelInitialized(data, dch, nnetm);
+			});
+		}
+
+		/**
+   * UnMap control events for DC
+   */
+
+	}, {
+		key: '_unMapDCcontrolEvents',
+		value: function _unMapDCcontrolEvents(dch) {
+
+			var nnetm = this;
+
+			dch.eventEmitter.removeAllListeners(dch.CONSTANTS.Events.ChannelInitialized);
 		}
 
 		/**
@@ -108,6 +175,25 @@ var NodeNetManager = function (_DataChannelsManager) {
 			if (options.socketPort) {
 				dch.config.socketPort = options.socketPort;
 			}
+		}
+
+		/**
+   * Event ChannelInitialized
+   */
+
+	}, {
+		key: '_event_ChannelInitialized',
+		value: function _event_ChannelInitialized(data, dch, nnetm) {
+
+			if (nnetm === undefined) {
+				nnetm = this;
+			}
+
+			// Emit event ChannelInitialized
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.ChannelInitialized, {
+				"channelID": dch.config.id,
+				"dataChannel": dch
+			});
 		}
 	}]);
 

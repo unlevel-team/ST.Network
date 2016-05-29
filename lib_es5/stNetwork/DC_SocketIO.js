@@ -104,13 +104,19 @@ var DC_SocketIO = function (_DataChannel) {
 				});
 			});
 
+			// Map event MainLoop_Tick
 			dc.eventEmitter.on(dc.CONSTANTS.Events.MainLoop_Tick, function () {
-				// Map event MainLoop_Tick
-				dc.socket.emit(dc.CONSTANTS.Messages.DataMessage, dc.messagesList); // Emit messages to socket
+
+				// Emit messages to socket
+				dc.socket.emit(dc.CONSTANTS.Messages.DataMessage, dc.messagesList);
 				dc.messagesList = [];
 			});
 
-			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelInitialized); // Emit event Channel initialized
+			// Change state to Ready
+			dc.state = dc.CONSTANTS.States.DCstate_Ready;
+
+			// Emit event Channel initialized
+			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelInitialized);
 		}
 
 		/**
@@ -165,6 +171,39 @@ var DC_SocketIO = function (_DataChannel) {
 
 			dc.state = dc.CONSTANTS.States.DCstate_Ready; // Change state to Ready
 			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelInitialized); // Emit event: Channel initialized
+		}
+
+		/**
+   * Close data channel
+   */
+
+	}, {
+		key: 'closeDataChannel',
+		value: function closeDataChannel() {
+
+			_get(Object.getPrototypeOf(DC_SocketIO.prototype), 'closeDataChannel', this).call(this);
+
+			var dc = this;
+
+			switch (dc.config.mode) {
+
+				case dc.CONSTANTS.Config.modeIN:
+					dc.server.close();
+					break;
+
+				case dc.CONSTANTS.Config.modeOUT:
+					dc.socket.close();
+					break;
+
+				default:
+					break;
+			}
+
+			// Change state to Config
+			dc.state = dc.CONSTANTS.States.DCstate_Config;
+
+			// Emit event ChannelClosed
+			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelClosed);
 		}
 	}]);
 

@@ -26,7 +26,44 @@ var SCS_RouteNetNodes = function () {
 		this.mapServiceRoutes();
 	}
 
+	/**
+  * Get data channel of node
+  */
+
+
 	_createClass(SCS_RouteNetNodes, [{
+		key: '_getDCofNode',
+		value: function _getDCofNode(nodeID, channelID, routerNet) {
+
+			if (routerNet === undefined) {
+				routerNet = this;
+			}
+
+			var ndm = routerNet.nodesManager;
+			var nnetm = routerNet.nodesNetManager;
+
+			var nodeSearch = ndm.getNodeByID(nodeID);
+			if (nodeSearch.stNode === null) {
+				throw "Node not found.";
+			}
+
+			var stNode = nodeSearch.stNode;
+
+			var dchSearch = nnetm.getDataChannelOfNode(nodeID, channelID);
+			if (dchSearch.dataChannel === null) {
+				throw "Data channel not found.";
+			}
+
+			var dch = dchSearch.dataChannel;
+
+			var response = {
+				"node": stNode,
+				"dataChannel": dch
+			};
+
+			return response;
+		}
+	}, {
 		key: 'mapServiceRoutes',
 		value: function mapServiceRoutes() {
 
@@ -230,23 +267,13 @@ var SCS_RouteNetNodes = function () {
 
 				try {
 
-					var nodeSearch = ndm.getNodeByID(_response.nodeID);
-					if (nodeSearch.stNode === null) {
-						throw "Node not found.";
-					}
-
-					var stNode = nodeSearch.stNode;
-
-					var dchSearch = nnetm.getDataChannelOfNode(_response.nodeID, _response.channelID);
-					if (dchSearch.dataChannel === null) {
-						throw "Data channel not found.";
-					}
-
-					var dch = dchSearch.dataChannel;
+					var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+					var dch = searchDC.dataChannel;
 
 					_response.options.type = dch.config.type;
 					_response.options.mode = dch.config.mode;
-					_response.options.state = dch.config._netState;
+					_response.options.state = dch.config.state;
+					_response.options.netstate = dch.config._netState;
 					_response.options.socketPort = dch.config.socketPort;
 					_response.options.netLocation = dch.config.netLocation;
 				} catch (e) {
@@ -276,21 +303,47 @@ var SCS_RouteNetNodes = function () {
 
 				try {
 
-					var nodeSearch = ndm.getNodeByID(_response.nodeID);
-					if (nodeSearch.stNode === null) {
-						throw "Node not found.";
-					}
-
-					var stNode = nodeSearch.stNode;
-
-					var dchSearch = nnetm.getDataChannelOfNode(_response.nodeID, _response.channelID);
-					if (dchSearch.dataChannel === null) {
-						throw "Data channel not found.";
-					}
-
-					var dch = dchSearch.dataChannel;
+					var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+					var dch = searchDC.dataChannel;
 
 					nnetm.setOptionsOfDataChannel(dch, options);
+				} catch (e) {
+					_response.ERROR = e;
+				}
+
+				res.jsonp(_response);
+				res.end();
+			});
+
+			// Initialize data channel on node
+			routerNet.expressRoute.get('/:nodeID/control/:channelID/init', function (req, res) {
+
+				var ndm = routerNet.nodesManager;
+				var nnetm = routerNet.nodesNetManager;
+
+				var _response = {
+					"context": "ST Server Net of Nodes",
+					"action": "Initialize data channel",
+					"nodeID": req.params.nodeID,
+					"channelID": req.params.channelID
+				};
+
+				try {
+
+					var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+					var dch = searchDC.dataChannel;
+					var stNode = searchDC.node;
+
+					try {
+
+						if (dch.state !== dch.CONSTANTS.States.DCstate_Config) {
+							throw "Bad Channel state";
+						}
+
+						nnetm.initializeDConNode(dch, stNode);
+					} catch (e) {
+						throw "Cannot init channel. " + e;
+					}
 				} catch (e) {
 					_response.ERROR = e;
 				}
