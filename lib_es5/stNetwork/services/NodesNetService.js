@@ -152,6 +152,10 @@ var NodesNetService = function () {
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.DataChannelDeleted);
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.DataChannelOptions);
 				socket.removeAllListeners(nnets.CONSTANTS.Messages.DCOptionsUpdated);
+				socket.removeAllListeners(nnets.CONSTANTS.Messages.DCInitialized);
+				socket.removeAllListeners(nnets.CONSTANTS.Messages.DCClosed);
+				socket.removeAllListeners(nnets.CONSTANTS.Messages.DataChannelStarted);
+				socket.removeAllListeners(nnets.CONSTANTS.Messages.DataChannelStopped);
 
 				_node.config._nodesNetService.active = false; // Set active property to false
 			});
@@ -250,6 +254,54 @@ var NodesNetService = function () {
 				} catch (e) {
 					// TODO: handle exception
 					console.log('<EEE> ST NodesNetService.DCInitialized'); // TODO REMOVE DEBUG LOG
+					console.log(e); // TODO REMOVE DEBUG LOG
+				}
+			});
+
+			// Map message DCClosed
+			socket.on(nnets.CONSTANTS.Messages.DCClosed, function (msg) {
+
+				try {
+					nnets._msg_DCClosed(msg, socket, {
+						"node": _node,
+						"nodeID": _node.config.nodeID,
+						"channelID": msg.channelID
+					});
+				} catch (e) {
+					// TODO: handle exception
+					console.log('<EEE> ST NodesNetService.DCClosed'); // TODO REMOVE DEBUG LOG
+					console.log(e); // TODO REMOVE DEBUG LOG
+				}
+			});
+
+			// Map message DataChannelStarted
+			socket.on(nnets.CONSTANTS.Messages.DataChannelStarted, function (msg) {
+
+				try {
+					nnets._msg_DataChannelStarted(msg, socket, {
+						"node": _node,
+						"nodeID": _node.config.nodeID,
+						"channelID": msg.channelID
+					});
+				} catch (e) {
+					// TODO: handle exception
+					console.log('<EEE> ST NodesNetService.DataChannelStarted'); // TODO REMOVE DEBUG LOG
+					console.log(e); // TODO REMOVE DEBUG LOG
+				}
+			});
+
+			// Map message DataChannelStopped
+			socket.on(nnets.CONSTANTS.Messages.DataChannelStopped, function (msg) {
+
+				try {
+					nnets._msg_DataChannelStopped(msg, socket, {
+						"node": _node,
+						"nodeID": _node.config.nodeID,
+						"channelID": msg.channelID
+					});
+				} catch (e) {
+					// TODO: handle exception
+					console.log('<EEE> ST NodesNetService.DataChannelStopped'); // TODO REMOVE DEBUG LOG
 					console.log(e); // TODO REMOVE DEBUG LOG
 				}
 			});
@@ -518,6 +570,7 @@ var NodesNetService = function () {
 				var dch = dchSearch.dataChannel;
 				var dchOptions = options.options;
 
+				dch.state = dchOptions.state;
 				dch.config._netState = dchOptions.state;
 				dch.config.socketPort = dchOptions.socketPort;
 				dch.config.netLocation = dchOptions.netLocation;
@@ -557,7 +610,8 @@ var NodesNetService = function () {
 					"channelID": dch.config._dchID
 				};
 
-				node.socket.emit(nnets.CONSTANTS.Messages.getDataChannelOptions, message); // Emit message getDataChannelOptions
+				// Emit message getDataChannelOptions
+				node.socket.emit(nnets.CONSTANTS.Messages.getDataChannelOptions, message);
 			} catch (e) {
 				// TODO: handle exception
 				console.log('<EEE> ST NodesNetService._msg_DCOptionsUpdated'); // TODO REMOVE DEBUG LOG
@@ -593,6 +647,102 @@ var NodesNetService = function () {
 			} catch (e) {
 				// TODO: handle exception
 				console.log('<EEE> ST NodesNetService._msg_DCInitialized'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+			}
+		}
+
+		/**
+   * Message DCClosed
+   */
+
+	}, {
+		key: '_msg_DCClosed',
+		value: function _msg_DCClosed(msg, socket, options) {
+
+			var nnets = this;
+			var nnetm = nnets.nodesNetManager;
+			var node = options.node;
+
+			console.log('<*> ST NodesNetService._msg_DCClosed'); // TODO REMOVE DEBUG LOG
+			console.log(msg); // TODO REMOVE DEBUG LOG
+
+			try {
+
+				var dchSearch = nnetm.getDataChannelOfNode(options.nodeID, options.channelID);
+				if (dchSearch.dataChannel === null) {
+					throw "Data channel not found.";
+				}
+
+				var dch = dchSearch.dataChannel;
+
+				dch.state = dch.CONSTANTS.States.DCstate_Config;
+			} catch (e) {
+				// TODO: handle exception
+				console.log('<EEE> ST NodesNetService._msg_DCClosed'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+			}
+		}
+
+		/**
+   * Message DataChannelStarted
+   */
+
+	}, {
+		key: '_msg_DataChannelStarted',
+		value: function _msg_DataChannelStarted(msg, socket, options) {
+
+			var nnets = this;
+			var nnetm = nnets.nodesNetManager;
+			var node = options.node;
+
+			console.log('<*> ST NodesNetService._msg_DataChannelStarted'); // TODO REMOVE DEBUG LOG
+			console.log(msg); // TODO REMOVE DEBUG LOG
+
+			try {
+
+				var dchSearch = nnetm.getDataChannelOfNode(options.nodeID, options.channelID);
+				if (dchSearch.dataChannel === null) {
+					throw "Data channel not found.";
+				}
+
+				var dch = dchSearch.dataChannel;
+
+				dch.state = dch.CONSTANTS.States.DCstate_Working;
+			} catch (e) {
+				// TODO: handle exception
+				console.log('<EEE> ST NodesNetService._msg_DataChannelStarted'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+			}
+		}
+
+		/**
+   * Message DataChannelStopped
+   */
+
+	}, {
+		key: '_msg_DataChannelStopped',
+		value: function _msg_DataChannelStopped(msg, socket, options) {
+
+			var nnets = this;
+			var nnetm = nnets.nodesNetManager;
+			var node = options.node;
+
+			console.log('<*> ST NodesNetService._msg_DataChannelStopped'); // TODO REMOVE DEBUG LOG
+			console.log(msg); // TODO REMOVE DEBUG LOG
+
+			try {
+
+				var dchSearch = nnetm.getDataChannelOfNode(options.nodeID, options.channelID);
+				if (dchSearch.dataChannel === null) {
+					throw "Data channel not found.";
+				}
+
+				var dch = dchSearch.dataChannel;
+
+				dch.state = dch.CONSTANTS.States.DCstate_Ready;
+			} catch (e) {
+				// TODO: handle exception
+				console.log('<EEE> ST NodesNetService._msg_DataChannelStopped'); // TODO REMOVE DEBUG LOG
 				console.log(e); // TODO REMOVE DEBUG LOG
 			}
 		}
@@ -719,6 +869,7 @@ var NodesNetService = function () {
 								nnets._createDConNode(_dch, node);
 								break;
 							case "deleteOnServer":
+								_dch.state = _dch.CONSTANTS.States.DCstate_Config;
 								nnetm._deleteDConServer(_dch, node);
 								break;
 

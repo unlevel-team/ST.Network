@@ -195,7 +195,7 @@ var SCS_RouteNetNodes = function () {
 					try {
 						routerNet.nodesNetManager.addDataChannelToNode(nodeSearch.stNode, req.params.channelID, dchConfig);
 					} catch (e) {
-						throw "Error adding channel. " + e.message;
+						throw "Error adding channel. " + e;
 					}
 				} catch (e) {
 
@@ -315,42 +315,197 @@ var SCS_RouteNetNodes = function () {
 				res.end();
 			});
 
-			// Initialize data channel on node
+			// Route for Initialize data channel on node
 			routerNet.expressRoute.get('/:nodeID/control/:channelID/init', function (req, res) {
 
-				var ndm = routerNet.nodesManager;
-				var nnetm = routerNet.nodesNetManager;
+				routerNet._route_initDC(req, res, routerNet);
+			});
 
-				var _response = {
-					"context": "ST Server Net of Nodes",
-					"action": "Initialize data channel",
-					"nodeID": req.params.nodeID,
-					"channelID": req.params.channelID
-				};
+			// Route for Close data channel on node
+			routerNet.expressRoute.get('/:nodeID/control/:channelID/close', function (req, res) {
+
+				routerNet._route_closeDC(req, res, routerNet);
+			});
+
+			// Route for Start data channel on node
+			routerNet.expressRoute.get('/:nodeID/control/:channelID/start', function (req, res) {
+
+				routerNet._route_startDC(req, res, routerNet);
+			});
+
+			// Route for Stop data channel on node
+			routerNet.expressRoute.get('/:nodeID/control/:channelID/stop', function (req, res) {
+
+				routerNet._route_stopDC(req, res, routerNet);
+			});
+		}
+
+		/**
+   * Initialize data channel on node
+   */
+
+	}, {
+		key: '_route_initDC',
+		value: function _route_initDC(req, res, routerNet) {
+
+			if (routerNet === undefined) {
+				routerNet = this;
+			}
+
+			var ndm = routerNet.nodesManager;
+			var nnetm = routerNet.nodesNetManager;
+
+			var _response = {
+				"context": "ST Server Net of Nodes",
+				"action": "Initialize data channel",
+				"nodeID": req.params.nodeID,
+				"channelID": req.params.channelID
+			};
+
+			try {
+
+				var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+				var dch = searchDC.dataChannel;
+				var stNode = searchDC.node;
 
 				try {
 
-					var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
-					var dch = searchDC.dataChannel;
-					var stNode = searchDC.node;
-
-					try {
-
-						if (dch.state !== dch.CONSTANTS.States.DCstate_Config) {
-							throw "Bad Channel state";
-						}
-
-						nnetm.initializeDConNode(dch, stNode);
-					} catch (e) {
-						throw "Cannot init channel. " + e;
-					}
+					dch.initDataChannel();
 				} catch (e) {
-					_response.ERROR = e;
+					throw "Cannot init channel. " + e;
 				}
+			} catch (e) {
+				_response.ERROR = e;
+			}
 
-				res.jsonp(_response);
-				res.end();
-			});
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Close data channel on node
+   */
+
+	}, {
+		key: '_route_closeDC',
+		value: function _route_closeDC(req, res, routerNet) {
+
+			if (routerNet === undefined) {
+				routerNet = this;
+			}
+
+			var ndm = routerNet.nodesManager;
+			var nnetm = routerNet.nodesNetManager;
+
+			var _response = {
+				"context": "ST Server Net of Nodes",
+				"action": "Close data channel",
+				"nodeID": req.params.nodeID,
+				"channelID": req.params.channelID
+			};
+
+			try {
+
+				var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+				var dch = searchDC.dataChannel;
+				var stNode = searchDC.node;
+
+				try {
+
+					dch.closeDataChannel();
+				} catch (e) {
+					throw "Cannot close channel. " + e;
+				}
+			} catch (e) {
+				_response.ERROR = e;
+			}
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Start data channel on node
+   */
+
+	}, {
+		key: '_route_startDC',
+		value: function _route_startDC(req, res, routerNet) {
+
+			if (routerNet === undefined) {
+				routerNet = this;
+			}
+
+			var ndm = routerNet.nodesManager;
+			var nnetm = routerNet.nodesNetManager;
+
+			var _response = {
+				"context": "ST Server Net of Nodes",
+				"action": "Start data channel",
+				"nodeID": req.params.nodeID,
+				"channelID": req.params.channelID
+			};
+
+			try {
+
+				var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+				var dch = searchDC.dataChannel;
+				var stNode = searchDC.node;
+
+				try {
+
+					dch.startDataChannel();
+				} catch (e) {
+					throw "Cannot start channel. " + e;
+				}
+			} catch (e) {
+				_response.ERROR = e;
+			}
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Stop data channel on node
+   */
+
+	}, {
+		key: '_route_stopDC',
+		value: function _route_stopDC(req, res, routerNet) {
+
+			if (routerNet === undefined) {
+				routerNet = this;
+			}
+
+			var ndm = routerNet.nodesManager;
+			var nnetm = routerNet.nodesNetManager;
+
+			var _response = {
+				"context": "ST Server Net of Nodes",
+				"action": "Stop data channel",
+				"nodeID": req.params.nodeID,
+				"channelID": req.params.channelID
+			};
+
+			try {
+
+				var searchDC = routerNet._getDCofNode(_response.nodeID, _response.channelID, routerNet);
+				var dch = searchDC.dataChannel;
+				var stNode = searchDC.node;
+
+				try {
+
+					dch.stopDataChannel();
+				} catch (e) {
+					throw "Cannot stop channel. " + e;
+				}
+			} catch (e) {
+				_response.ERROR = e;
+			}
+
+			res.jsonp(_response);
+			res.end();
 		}
 	}]);
 

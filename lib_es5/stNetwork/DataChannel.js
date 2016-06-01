@@ -13,7 +13,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EventEmitter = require('events').EventEmitter;
-var net = require('net');
 
 /**
  * DataChannel CONSTANTS
@@ -39,6 +38,9 @@ var DataChannel_CONSTANTS = {
 	},
 
 	"Events": {
+		"ChannelConnected": "Channel connected",
+		"ChannelDisconnected": "Channel disconnected",
+
 		"ChannelInitialized": "Channel initialized",
 		"ChannelClosed": "Channel closed",
 
@@ -103,12 +105,13 @@ var DataChannel = function () {
 
 		this.state = DataChannel_CONSTANTS.States.DCstate_Config;
 
-		var dataChannel = this;
+		var dc = this;
 
 		// Map event MainLoop_Stop
-		this.eventEmitter.on(this.CONSTANTS.Events.MainLoop_Stop, function () {
-			clearInterval(dataChannel._mainLoop);
-			dataChannel.state = dataChannel.CONSTANTS.States.DCstate_Ready;
+		dc.eventEmitter.on(dc.CONSTANTS.Events.MainLoop_Stop, function () {
+			clearInterval(dc._mainLoop);
+			dc.state = dc.CONSTANTS.States.DCstate_Ready;
+			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStopped);
 		});
 	}
 
@@ -118,7 +121,7 @@ var DataChannel = function () {
 
 
 	_createClass(DataChannel, [{
-		key: 'initDataChannel',
+		key: "initDataChannel",
 		value: function initDataChannel() {
 
 			var dc = this;
@@ -133,7 +136,7 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'closeDataChannel',
+		key: "closeDataChannel",
 		value: function closeDataChannel() {
 
 			var dc = this;
@@ -148,16 +151,14 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'startDataChannel',
+		key: "startDataChannel",
 		value: function startDataChannel() {
 
 			var dc = this;
 
-			if (dc.state !== dc.CONSTANTS.States.DCstate_Config || dc.state !== dc.CONSTANTS.States.DCstate_Stop) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
-
-			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStart); // Emit event ChannelStart
 		}
 
 		/**
@@ -165,7 +166,7 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'stopDataChannel',
+		key: "stopDataChannel",
 		value: function stopDataChannel() {
 
 			var dc = this;
@@ -173,8 +174,6 @@ var DataChannel = function () {
 			if (dc.state !== dc.CONSTANTS.States.DCstate_Working) {
 				throw "Bad channel state";
 			}
-
-			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStop); // Emit event ChannelStop
 		}
 
 		/**
@@ -182,7 +181,7 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'sendMessage',
+		key: "sendMessage",
 		value: function sendMessage(msg) {
 
 			var dc = this;
@@ -196,12 +195,12 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'mainLoop',
+		key: "mainLoop",
 		value: function mainLoop() {
 
 			var dc = this;
 
-			if (dc.state === dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
 
@@ -221,7 +220,7 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'stopMainLoop',
+		key: "stopMainLoop",
 		value: function stopMainLoop() {
 
 			var dc = this;
@@ -254,7 +253,7 @@ var DataChannelsManager = function () {
 
 
 	_createClass(DataChannelsManager, [{
-		key: 'addDataChannel',
+		key: "addDataChannel",
 
 
 		/**
@@ -283,7 +282,7 @@ var DataChannelsManager = function () {
    */
 
 	}, {
-		key: 'removeDataChannel',
+		key: "removeDataChannel",
 		value: function removeDataChannel(dchID) {
 
 			var dcm = this;
@@ -310,7 +309,7 @@ var DataChannelsManager = function () {
    */
 
 	}, {
-		key: 'getDataChannelByID',
+		key: "getDataChannelByID",
 		value: function getDataChannelByID(dchID) {
 
 			var dcm = this;
@@ -332,7 +331,7 @@ var DataChannelsManager = function () {
 			};
 		}
 	}], [{
-		key: 'get_DataChannel',
+		key: "get_DataChannel",
 		value: function get_DataChannel(config) {
 
 			var dataChannel = null;
@@ -356,7 +355,7 @@ var DataChannelsManager = function () {
    */
 
 	}, {
-		key: 'getMessagesByTypeExtra',
+		key: "getMessagesByTypeExtra",
 		value: function getMessagesByTypeExtra(typeExtra, msgList) {
 
 			var messages = msgList.filter(function (msg, _i, _items) {

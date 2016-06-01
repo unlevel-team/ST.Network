@@ -40,6 +40,9 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 	/**
   * Add data channel to node
+  * 
+  * @dchID Data channel ID (DC.id)
+  * @config DC configuration
   */
 
 
@@ -135,6 +138,21 @@ var NodeNetManager = function (_DataChannelsManager) {
 			dch.eventEmitter.on(dch.CONSTANTS.Events.ChannelInitialized, function (data) {
 				nnetm._event_ChannelInitialized(data, dch, nnetm);
 			});
+
+			// Map event ChannelStarted
+			dch.eventEmitter.on(dch.CONSTANTS.Events.ChannelStarted, function (data) {
+				nnetm._event_ChannelStarted(data, dch, nnetm);
+			});
+
+			// Map event ChannelStopped
+			dch.eventEmitter.on(dch.CONSTANTS.Events.ChannelStopped, function (data) {
+				nnetm._event_ChannelStopped(data, dch, nnetm);
+			});
+
+			// Map event ChannelClosed
+			dch.eventEmitter.on(dch.CONSTANTS.Events.ChannelClosed, function (data) {
+				nnetm._event_ChannelClosed(data, dch, nnetm);
+			});
 		}
 
 		/**
@@ -148,6 +166,9 @@ var NodeNetManager = function (_DataChannelsManager) {
 			var nnetm = this;
 
 			dch.eventEmitter.removeAllListeners(dch.CONSTANTS.Events.ChannelInitialized);
+			dch.eventEmitter.removeAllListeners(dch.CONSTANTS.Events.ChannelStarted);
+			dch.eventEmitter.removeAllListeners(dch.CONSTANTS.Events.ChannelStopped);
+			dch.eventEmitter.removeAllListeners(dch.CONSTANTS.Events.ChannelClosed);
 		}
 
 		/**
@@ -160,7 +181,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 			var nnetm = this;
 
-			if (dch.config.state === dch.CONSTANTS.States.DCstate_Working) {
+			if (dch.state !== dch.CONSTANTS.States.DCstate_Config) {
 				throw "Bad data channel state";
 			}
 
@@ -191,6 +212,63 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 			// Emit event ChannelInitialized
 			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.ChannelInitialized, {
+				"channelID": dch.config.id,
+				"dataChannel": dch
+			});
+		}
+
+		/**
+   * Event ChannelStarted
+   */
+
+	}, {
+		key: '_event_ChannelStarted',
+		value: function _event_ChannelStarted(data, dch, nnetm) {
+
+			if (nnetm === undefined) {
+				nnetm = this;
+			}
+
+			// Emit event ChannelInitialized
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.ChannelStarted, {
+				"channelID": dch.config.id,
+				"dataChannel": dch
+			});
+		}
+
+		/**
+   * Event ChannelStopped
+   */
+
+	}, {
+		key: '_event_ChannelStopped',
+		value: function _event_ChannelStopped(data, dch, nnetm) {
+
+			if (nnetm === undefined) {
+				nnetm = this;
+			}
+
+			// Emit event ChannelInitialized
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.ChannelStopped, {
+				"channelID": dch.config.id,
+				"dataChannel": dch
+			});
+		}
+
+		/**
+   * Event ChannelClosed
+   */
+
+	}, {
+		key: '_event_ChannelClosed',
+		value: function _event_ChannelClosed(data, dch, nnetm) {
+
+			if (nnetm === undefined) {
+				nnetm = this;
+			}
+
+			// Emit event ChannelClosed
+			nnetm.eventEmitter.emit(nnetm.CONSTANTS.Events.ChannelClosed, {
 				"channelID": dch.config.id,
 				"dataChannel": dch
 			});
