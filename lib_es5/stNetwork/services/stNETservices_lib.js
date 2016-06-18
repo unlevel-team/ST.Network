@@ -5,21 +5,39 @@
 
 */
 
-var NodeNetManager = require('./NodeNetManager.js');
-var NodeNetService = require('./NodeNetService.js').NodeNetService;
+function _get_NodeNetManager() {
+	var _lib = require('./NodeNetManager.js');
+	return _lib;
+}
 
-var NodesNetManager = require('./NodesNetManager.js');
-var NodesNetService = require('./NodesNetService.js').NodesNetService;
-var ServerNetManager = require('./ServerNetManager.js');
+function _get_NodeNetService() {
+	var _lib = require('./NodeNetService.js').NodeNetService;
+	return _lib;
+}
+
+function _get_NodesNetManager() {
+	var _lib = require('./NodesNetManager.js');
+	return _lib;
+}
+
+function _get_NodesNetService() {
+	var NodesNetService = require('./NodesNetService.js').NodesNetService;
+	return NodesNetService;
+}
+
+function _get_ServerNetManager() {
+	var ServerNetManager = require('./ServerNetManager.js');
+	return ServerNetManager;
+}
 
 var stNETservices_Lib = {
 
-	"NodeNetManager": NodeNetManager,
-	"NodeNetService": NodeNetService,
+	"get_NodeNetManager": _get_NodeNetManager,
+	"get_NodeNetService": _get_NodeNetService,
 
-	"NodesNetManager": NodesNetManager,
-	"NodesNetService": NodesNetService,
-	"ServerNetManager": ServerNetManager
+	"get_NodesNetManager": _get_NodesNetManager,
+	"get_NodesNetService": _get_NodesNetService,
+	"get_ServerNetManager": _get_ServerNetManager
 
 };
 

@@ -6,7 +6,7 @@
 */
 
 /**
- * N service constants
+ * Network service constants
  */
 
 var NETservices_CONSTANTS = {
