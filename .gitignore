@@ -2,3 +2,4 @@
 /.project
 /.tern-project
 /node_modules/
+/jsdoc_out/
