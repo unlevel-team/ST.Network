@@ -3,7 +3,12 @@
 /**
  * SomeThings Network library
  * 
- * 
+ * @ignore
+ */
+
+/**
+ * Import dataChannel_Lib
+ * @ignore
  */
 
 var dataChannel_Lib = require("./DataChannel.js");

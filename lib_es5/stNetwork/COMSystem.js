@@ -7,14 +7,28 @@
  * 
  */
 
+/**
+ * Import EventEmitter
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EventEmitter = require('events').EventEmitter;
 
+/**
+ * Import DataMessage
+ * @ignore
+ */
 var DataMessage = require('./DataChannel.js').DataMessage;
 
+/**
+ * COMSystem constants
+ * 
+ * @static
+ */
 var COMSystem_CONSTANTS = {
 
 	"Config": {
@@ -66,9 +80,27 @@ var COMSystem_CONSTANTS = {
 
 /**
  * ThingBind
+ * 
+ * @class
+ * 
+ * @property {string} version - Version
+ * @property {string} bindID - Bind ID
+ * @property {string} type - Bind type
+ * @property {string} role - Bind role
+ * @property {string} state - Bind state
+ * @property {object} source - Bind source
+ * @property {object} target - Bind target
+ * @property {object} options - Options
+ * @property {object} eventEmitter - Object for emit events.
+ * 
  */
 
 var ThingBind = function () {
+
+	/**
+  * @constructs ThingBind
+  */
+
 	function ThingBind(type, source, target, options) {
 		_classCallCheck(this, ThingBind);
 
@@ -87,6 +119,11 @@ var ThingBind = function () {
 
 		this.eventEmitter = new EventEmitter();
 	}
+
+	/**
+  * Initialize Bind
+  */
+
 
 	_createClass(ThingBind, [{
 		key: 'initialize',
@@ -127,8 +164,8 @@ var ThingBind = function () {
 		/**
    * Start Bind
    * 
-   * @param synchro Synchronization (true or false)
-   * @param options Options
+   * @param {boolean} synchro - Synchronization (true or false)
+   * @param {object} options - Options object
    */
 
 	}, {
@@ -156,8 +193,8 @@ var ThingBind = function () {
 		/**
    * Stop Bind
    * 
-   * @param synchro Synchronization (true or false)
-   * @param options Options
+   * @param {boolean} synchro - Synchronization (true or false)
+   * @param {object} options - Options object
    */
 
 	}, {
@@ -185,8 +222,8 @@ var ThingBind = function () {
 		/**
    * Unbind
    * 
-   * @param synchro Synchronization (true or false)
-   * @param options Options
+   * @param {boolean} synchro - Synchronization (true or false)
+   * @param {object} options - Options object
    */
 
 	}, {
@@ -218,10 +255,22 @@ var ThingBind = function () {
 
 /**
  * COMSystem
+ * 
+ * @class
+ * @property {string} version - Version
+ * @property {object} config - Configuration object
+ * @property {object} controlChannel - Control channel object
+ * @property {ThingBind[]} thingsBindings - ThingBinds list
+ * 
  */
 
 
 var COMSystem = function () {
+
+	/**
+  * @constructs COMSystem
+  */
+
 	function COMSystem(config) {
 		_classCallCheck(this, COMSystem);
 
@@ -232,6 +281,11 @@ var COMSystem = function () {
 		this.controlChannel = null;
 		this.thingsBindings = [];
 	}
+
+	/**
+  * Initialize COMSystem
+  */
+
 
 	_createClass(COMSystem, [{
 		key: 'initialize',
@@ -363,6 +417,9 @@ var COMSystem = function () {
 
 /**
  * Get COMSystem
+ * 
+ * @param {object} config - Configuration object
+ * @returns {COMSystem}
  */
 
 

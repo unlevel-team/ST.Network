@@ -7,6 +7,12 @@
  * 
  * 
  * v. Morse
+ * 
+ */
+
+/**
+ * Import TBind_Morse
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -17,9 +23,23 @@ var TBind_Morse = require("./COMsys_Morse.js").TBind_Morse;
 
 /**
  * Bind Service
+ * 
+ * 
+ * @class
+ * @property {object} comSYS - The COMSystem.
+ * @property {object} tBind - The TBind.
+ * 
  */
 
 var TBind_Morse_Service = function () {
+
+	/**
+  * 
+  * @param {COMSystem} comSYS - COM System
+  * @param {object} tBind - TBinds service
+  * @constructs TBind_Morse_Service
+  */
+
 	function TBind_Morse_Service(comSYS, tBind) {
 		_classCallCheck(this, TBind_Morse_Service);
 
@@ -27,6 +47,11 @@ var TBind_Morse_Service = function () {
 		this.tBind = tBind;
 		this.CONSTANTS = comSYS.CONSTANTS;
 	}
+
+	/**
+  * Initialize TBind_Morse_Service
+  */
+
 
 	_createClass(TBind_Morse_Service, [{
 		key: "initialize",
@@ -93,10 +118,17 @@ var TBind_Morse_Service = function () {
 
 /**
  * Communications System Service
+ * 
+ * @class
  */
 
 
 var COMSys_Morse_Service = function () {
+
+	/**
+  * @construct COMSys_Morse_Service
+  */
+
 	function COMSys_Morse_Service(comSYS) {
 		_classCallCheck(this, COMSys_Morse_Service);
 

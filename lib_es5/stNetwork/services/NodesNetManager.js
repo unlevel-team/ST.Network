@@ -11,6 +11,11 @@
 
  */
 
+/**
+ * import DataChannel
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -22,16 +27,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var DataChannel = require('../DataChannel.js').DataChannel;
+
+/**
+ * import DataChannelsManager
+ * @ignore
+ */
 var DataChannelsManager = require('../DataChannel.js').DataChannelsManager;
 
+/**
+ * import NETservices_CONSTANTS
+ * @ignore
+ */
 var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
 
 /**
  * Node data channel
+ * 
+ * @class
+ * @implements DataChannel
  */
 
 var NodeDC = function (_DataChannel) {
 	_inherits(NodeDC, _DataChannel);
+
+	/**
+  * @constructs NodeDC
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function NodeDC(config) {
 		_classCallCheck(this, NodeDC);
@@ -182,11 +205,18 @@ var NodeDC = function (_DataChannel) {
 
 /**
  * Nodes net manager
+ * 
+ * @class
+ * @implements DataChannelsManager
  */
 
 
 var NodesNetManager = function (_DataChannelsManager) {
 	_inherits(NodesNetManager, _DataChannelsManager);
+
+	/**
+  * @constructs NodesNetManager
+  */
 
 	function NodesNetManager() {
 		_classCallCheck(this, NodesNetManager);
@@ -206,6 +236,9 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 	/**
   * Get Node data channel
+  * 
+  * @param {object} config - Configuration object for DC
+  * @returns {DataChannel}
   */
 
 
@@ -215,6 +248,12 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 		/**
    * Add data channel to node
+   * 
+   * @param {object} node - Node
+   * @param {string} dchID - Data channel ID
+   * @param {object} config - Configuration object for DC
+   * 
+   * @throws {Exception}
    */
 		value: function addDataChannelToNode(node, dchID, config) {
 
@@ -269,6 +308,9 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 		/**
    * Remove data channel from node
+   * 
+   * @param {object} node - Node
+   * @param {string} dchID - Data channel ID
    */
 
 	}, {
@@ -280,6 +322,9 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 		/**
    * Get data channel of node
+   * 
+   * @param {string} nodeID - Node ID
+   * @param {string} dchID - Data channel ID
    */
 
 	}, {
@@ -291,6 +336,8 @@ var NodesNetManager = function (_DataChannelsManager) {
 
 		/**
    * Returns data channels searched by DataChannel.config._nodeID
+   * 
+   * @param {string} nodeID - Node ID
    */
 
 	}, {

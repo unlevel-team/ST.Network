@@ -8,6 +8,13 @@
  * 
  * 
  * v. Morse
+ * 
+ * @ignore
+ */
+
+/**
+ * Import TBind_Morse_Node
+ * @ignore
  */
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -22,16 +29,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var TBind_Morse_Node = require('./csysMorse_Node.js').CSYS_Morse_Node;
 
+/**
+ * Import TBind_Morse_Service
+ * @ignore
+ */
 var TBind_Morse_Service = require('./csysMorse_Services.js').TBind_Morse_Service;
+
+/**
+ * Import COMSys_Morse_Service
+ * @ignore
+ */
 var COMSys_Morse_Service = require('./csysMorse_Services.js').COMSys_Morse_Service;
 
 /**
  * Bind Service
  * Role Node
+ * 
+ * @class
+ * @implements {TBind_Morse_Service}
  */
 
 var TBind_Morse_Srv_Node = function (_TBind_Morse_Service) {
 	_inherits(TBind_Morse_Srv_Node, _TBind_Morse_Service);
+
+	/**
+  * @constructs TBind_Morse_Srv_Node
+  */
 
 	function TBind_Morse_Srv_Node(comSYS, tBind) {
 		_classCallCheck(this, TBind_Morse_Srv_Node);
@@ -76,11 +99,17 @@ var TBind_Morse_Srv_Node = function (_TBind_Morse_Service) {
 /**
  * Communications System Service
  * Role Node
+ * @class
+ * @implements {COMSys_Morse_Service}
  */
 
 
 var COMSys_Morse_Srv_Node = function (_COMSys_Morse_Service) {
 	_inherits(COMSys_Morse_Srv_Node, _COMSys_Morse_Service);
+
+	/**
+  * @construct COMSys_Morse_Srv_Node
+  */
 
 	function COMSys_Morse_Srv_Node(comSYS) {
 		_classCallCheck(this, COMSys_Morse_Srv_Node);

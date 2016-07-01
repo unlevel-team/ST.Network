@@ -12,6 +12,11 @@
  * v. Morse
  */
 
+/**
+ * import DataMessage
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -24,18 +29,44 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var DataMessage = require('../DataChannel.js').DataMessage;
 
+/**
+ * import TBind_Morse
+ * @ignore
+ */
 var TBind_Morse = require('./COMsys_Morse.js').TBind_Morse;
+
+/**
+ * import COMSystem_Morse
+ * @ignore
+ */
 var COMSystem_Morse = require('./COMsys_Morse.js').COMSystem_Morse;
 
+/**
+ * import COMSys_Morse_Srv_Node
+ * @ignore
+ */
 var COMSys_Morse_Srv_Node = require('./csysMorse_NodeServices.js').COMSys_Morse_Srv_Node;
 
 /**
  * ThingBind for role Node
  * 
+ * @class
+ * @implements TBind_Morse
+ * 
  */
 
 var TBind_Morse_Node = function (_TBind_Morse) {
 	_inherits(TBind_Morse_Node, _TBind_Morse);
+
+	/**
+  * @constructs TBind_Morse_Node
+  * 
+  * @param {string} type - Type of bind
+  * @param {object} source - Source
+  * @param {object} target - Target
+  * @param {object} options - Options object
+  * 
+  */
 
 	function TBind_Morse_Node(type, source, target, options) {
 		_classCallCheck(this, TBind_Morse_Node);
@@ -175,6 +206,9 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 
 /**
  * Communications System for Node role
+ * 
+ * @class
+ * @implements COMSystem_Morse
  *  
  */
 
@@ -182,11 +216,24 @@ var TBind_Morse_Node = function (_TBind_Morse) {
 var CSYS_Morse_Node = function (_COMSystem_Morse) {
 	_inherits(CSYS_Morse_Node, _COMSystem_Morse);
 
+	/**
+  * 
+  * @constructs CSYS_Morse_Node
+  * 
+  * @param {object} config - Configuration object
+  * 
+  */
+
 	function CSYS_Morse_Node(config) {
 		_classCallCheck(this, CSYS_Morse_Node);
 
 		return _possibleConstructorReturn(this, Object.getPrototypeOf(CSYS_Morse_Node).call(this, config));
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(CSYS_Morse_Node, [{
 		key: 'initialize',

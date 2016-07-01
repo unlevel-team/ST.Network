@@ -7,6 +7,12 @@
  * 
  * 
  * v. Morse
+ * @ignore
+ */
+
+/**
+ * Import DataMessage
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21,7 +27,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var DataMessage = require('../DataChannel.js').DataMessage;
 
+/**
+ * Import ThingBind
+ * @ignore
+ */
 var ThingBind = require('../COMSystem.js').ThingBind;
+
+/**
+ * Import COMSystem
+ * @ignore
+ */
 var COMSystem = require('../COMSystem.js').COMSystem;
 
 var COMSystem_CONSTANTS = require('../COMSystem.js').COMSystem_CONSTANTS;
@@ -34,6 +49,9 @@ var COMSystem_Morse_CONSTANTS = {
 
 /**
  * TBind_Morse
+ * 
+ * @class
+ * @interface
  */
 
 var TBind_Morse = function (_ThingBind) {
@@ -92,11 +110,21 @@ var TBind_Morse = function (_ThingBind) {
  * 
  * Requires role configuration. (Server | Node)
  * 
+ * @class
+ * @implements COMSystem
+ * 
  */
 
 
 var COMSystem_Morse = function (_COMSystem) {
 	_inherits(COMSystem_Morse, _COMSystem);
+
+	/**
+  * 
+  * @constructs COMSystem_Morse
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function COMSystem_Morse(config) {
 		_classCallCheck(this, COMSystem_Morse);
@@ -111,6 +139,11 @@ var COMSystem_Morse = function (_COMSystem) {
 
 		return _this2;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(COMSystem_Morse, [{
 		key: 'initialize',
@@ -186,6 +219,9 @@ var COMSystem_Morse = function (_COMSystem) {
 
 		/**
    * Bind data channel
+   * 
+   * @param {DataChannel} dc - Data channel
+   * 
    */
 
 	}, {
@@ -206,6 +242,8 @@ var COMSystem_Morse = function (_COMSystem) {
 
 		/**
    * Unbind data channel
+   * 
+   * @param {DataChannel} dc - Data channel
    */
 
 	}, {
@@ -251,6 +289,8 @@ var COMSystem_Morse = function (_COMSystem) {
 
 /**
  * Get COMSystem
+ * 
+ * @returns {(CSYS_Morse_Node|CSYS_Morse_Server)} - Depends on 'config.role'
  */
 
 

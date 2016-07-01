@@ -11,6 +11,10 @@
 
 */
 
+/**
+ * import NETservices_CONSTANTS
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19,9 +23,24 @@ var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
 
 /**
  * Nodes net service
+ * 
+ * @class
+ * @property {NodesManager} nodesManager - Nodes manager
+ * @property {NodesNetManager} nodesNetManager - Nodes Net manager
+ * 
  */
 
 var NodesNetService = function () {
+
+	/**
+  * 
+  * @constructs NodesNetService
+  * 
+  * @param {NodesManager} nodesManager - Nodes manager
+  * @param {NodesNetManager} nodesNetManager - Nodes Net manager
+  * 
+  */
+
 	function NodesNetService(nodesManager, nodesNetManager) {
 		_classCallCheck(this, NodesNetService);
 
@@ -30,6 +49,11 @@ var NodesNetService = function () {
 
 		this.CONSTANTS = NETservices_CONSTANTS;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(NodesNetService, [{
 		key: 'initialize',
@@ -129,6 +153,9 @@ var NodesNetService = function () {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} node - Node object
+   * @param {object} socket - Socket object
    */
 
 	}, {

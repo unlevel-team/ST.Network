@@ -1,19 +1,49 @@
 "use strict";
 
+/**
+ * import express
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var express = require('express');
 
+/**
+ * import bodyParser
+ * @ignore
+ */
 var bodyParser = require('body-parser');
 
 /**
  * Routes for Net of Nodes
  * Use with Server control service
+ * 
+ * @class
+ * 
+ * 
+ * @property {object} expressRoute - Express route object
+ * @property {number} messages - Counter for messages
+ * 
+ * @property {NodesManager} nodesManager - Nodes manager
+ * @property {NodesNetManager} nodesNetManager - Nodes Net manager
+ * 
  */
 
 var SCS_RouteNetNodes = function () {
+
+	/**
+  * 
+  * @constructs SCS_RouteNetNodes
+  * 
+  * @param {NodesManager} nodesManager - Nodes manager
+  * @param {NodesNetManager} nodesNetManager - Nodes Net manager
+  * @param {object} expressRoute - Express route object
+  * 
+  */
+
 	function SCS_RouteNetNodes(nodesManager, nodesNetManager, expressRoute) {
 		_classCallCheck(this, SCS_RouteNetNodes);
 
@@ -63,6 +93,11 @@ var SCS_RouteNetNodes = function () {
 
 			return response;
 		}
+
+		/**
+   * Map service routes
+   */
+
 	}, {
 		key: 'mapServiceRoutes',
 		value: function mapServiceRoutes() {

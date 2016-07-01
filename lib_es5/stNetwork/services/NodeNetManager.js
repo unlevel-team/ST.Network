@@ -11,6 +11,11 @@
  
  */
 
+/**
+ * import DataChannelsManager
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23,10 +28,19 @@ var DataChannelsManager = require('../DataChannel.js').DataChannelsManager;
 
 /**
  * Node net manager
+ * 
+ * @class
+ * @implements DataChannelsManager
  */
 
 var NodeNetManager = function (_DataChannelsManager) {
 	_inherits(NodeNetManager, _DataChannelsManager);
+
+	/**
+  * @constructs NodeNetManager
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function NodeNetManager(config) {
 		_classCallCheck(this, NodeNetManager);
@@ -41,8 +55,8 @@ var NodeNetManager = function (_DataChannelsManager) {
 	/**
   * Add data channel to node
   * 
-  * @dchID Data channel ID (DC.id)
-  * @config DC configuration
+  * @param {string} dchID - Data channel ID (DC.id)
+  * @param {object} config - DC configuration
   */
 
 
@@ -91,7 +105,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 		/**
    * Remove data channel from node
    * 
-   * @dc could be DC.id or DC object
+   * @param {(DataChannel|string)} dc - could be DC.id or DC object
    */
 
 	}, {
@@ -126,6 +140,8 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Map control events for DC
+   * 
+   * @param {DataChannel} dch - Data channel object
    */
 
 	}, {
@@ -157,6 +173,8 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * UnMap control events for DC
+   * 
+   * @param {DataChannel} dch - Data channel object
    */
 
 	}, {
@@ -173,6 +191,13 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Set data channel options
+   * 
+   * @param {DataChannel} dch - Data channel object
+   * @param {object} options - Options object
+   * @param {number} [options.loopTime] - Looptime 
+   * @param {string} [options.netLocation] - Net location 
+   * @param {number} [options.socketPort] - Socket port 
+   * 
    */
 
 	}, {
@@ -200,6 +225,10 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Event ChannelInitialized
+   * 
+   * @param {object} data - Event data 
+   * @param {DataChannel} dch - Data Channel object
+   * @param {NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -219,6 +248,10 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Event ChannelStarted
+   * 
+   * @param {object} data - Event data 
+   * @param {DataChannel} dch - Data Channel object
+   * @param {NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -238,6 +271,10 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Event ChannelStopped
+   * 
+   * @param {object} data - Event data 
+   * @param {DataChannel} dch - Data Channel object
+   * @param {NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -257,6 +294,10 @@ var NodeNetManager = function (_DataChannelsManager) {
 
 		/**
    * Event ChannelClosed
+   * 
+   * @param {object} data - Event data 
+   * @param {DataChannel} dch - Data Channel object
+   * @param {NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
