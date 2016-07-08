@@ -51,7 +51,8 @@ var COMSys_Morse_Srv_Node = require('./csysMorse_NodeServices.js').COMSys_Morse_
  * ThingBind for role Node
  * 
  * @class
- * @implements TBind_Morse
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.TBind_Morse
  * 
  */
 
@@ -208,7 +209,8 @@ var TBind_Morse_Node = function (_TBind_Morse) {
  * Communications System for Node role
  * 
  * @class
- * @implements COMSystem_Morse
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.COMSystem_Morse
  *  
  */
 

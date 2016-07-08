@@ -26,8 +26,9 @@ var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
  * Node net service
  * 
  * @class
+ * @memberof st.net.services
  * @property {object} node - Node
- * @property {NodeNetManager} nodeNetManager - Node Net manager
+ * @property {st.net.services.NodeNetManager} nodeNetManager - Node Net manager
  * 
  */
 
@@ -37,7 +38,7 @@ var NodeNetService = function () {
   * @constructs NodeNetService
   * 
   * @param {object} node - Node
-  * @param {NodeNetManager} nodeNetManager - Node Net manager
+  * @param {st.net.services.NodeNetManager} nodeNetManager - Node Net manager
   */
 
 	function NodeNetService(node, nodeNetManager) {

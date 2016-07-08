@@ -1,9 +1,17 @@
 "use strict";
 
-/*
+/**
  SomeThings Network services library
-
 */
+
+/**
+ * @ignore
+ */
+
+function _get_NetServices() {
+	var _lib = require('./NetServices.js');
+	return _lib;
+}
 
 function _get_NodeNetManager() {
 	var _lib = require('./NodeNetManager.js');
@@ -30,7 +38,13 @@ function _get_ServerNetManager() {
 	return ServerNetManager;
 }
 
+/**
+ * @namespace st.net.services
+ * @memberof st.net
+ */
 var stNETservices_Lib = {
+
+	"get_NetServices": _get_NetServices,
 
 	"get_NodeNetManager": _get_NodeNetManager,
 	"get_NodeNetService": _get_NodeNetService,

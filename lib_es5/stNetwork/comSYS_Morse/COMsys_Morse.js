@@ -3,11 +3,16 @@
 /**
  * COMSystem library
  * 
+ * <pre>
  * Provides communications system to ST network
  * 
  * 
  * v. Morse
- * @ignore
+ * </pre>
+ * 
+ * @namespace st.net.comsys_morse
+ * @memberof st.net
+ * 
  */
 
 /**
@@ -39,8 +44,18 @@ var ThingBind = require('../COMSystem.js').ThingBind;
  */
 var COMSystem = require('../COMSystem.js').COMSystem;
 
+/**
+ * Import COMSystem_CONSTANTS
+ * @ignore
+ */
 var COMSystem_CONSTANTS = require('../COMSystem.js').COMSystem_CONSTANTS;
 
+/**
+ * COMSystem Morse CONSTANTS
+ * 
+ * @memberof st.net.comsys_morse
+ * 
+ */
 var COMSystem_Morse_CONSTANTS = {
 	"Config": {
 		"Version": "Morse"
@@ -51,11 +66,19 @@ var COMSystem_Morse_CONSTANTS = {
  * TBind_Morse
  * 
  * @class
- * @interface
+ * @memberof st.net.comsys_morse
+ * @implements st.net.ThingBind
+ * 
  */
 
 var TBind_Morse = function (_ThingBind) {
 	_inherits(TBind_Morse, _ThingBind);
+
+	/**
+  * @constructs TBind_Morse
+  * 
+  * 
+  */
 
 	function TBind_Morse(type, source, target, options) {
 		_classCallCheck(this, TBind_Morse);
@@ -111,7 +134,8 @@ var TBind_Morse = function (_ThingBind) {
  * Requires role configuration. (Server | Node)
  * 
  * @class
- * @implements COMSystem
+ * @memberof st.net.comsys_morse
+ * @implements st.net.COMSystem
  * 
  */
 
@@ -220,7 +244,7 @@ var COMSystem_Morse = function (_COMSystem) {
 		/**
    * Bind data channel
    * 
-   * @param {DataChannel} dc - Data channel
+   * @param {st.net.DataChannel} dc - Data channel
    * 
    */
 
@@ -243,7 +267,7 @@ var COMSystem_Morse = function (_COMSystem) {
 		/**
    * Unbind data channel
    * 
-   * @param {DataChannel} dc - Data channel
+   * @param {st.net.DataChannel} dc - Data channel
    */
 
 	}, {
@@ -290,7 +314,11 @@ var COMSystem_Morse = function (_COMSystem) {
 /**
  * Get COMSystem
  * 
- * @returns {(CSYS_Morse_Node|CSYS_Morse_Server)} - Depends on 'config.role'
+ * @memberof st.net.comsys_morse
+ * 
+ * @param {object} config - Configuration object
+ * 
+ * @returns {(st.net.comsys_morse.CSYS_Morse_Node|st.net.comsys_morse.CSYS_Morse_Server)} - Depends on 'config.role'
  */
 
 

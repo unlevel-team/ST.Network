@@ -44,7 +44,8 @@ var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
  * Node data channel
  * 
  * @class
- * @implements DataChannel
+ * @memberof st.net.services
+ * @implements st.net.DataChannel
  */
 
 var NodeDC = function (_DataChannel) {
@@ -207,7 +208,8 @@ var NodeDC = function (_DataChannel) {
  * Nodes net manager
  * 
  * @class
- * @implements DataChannelsManager
+ * @memberof st.net.services
+ * @implements st.net.DataChannelsManager
  */
 
 
@@ -238,7 +240,7 @@ var NodesNetManager = function (_DataChannelsManager) {
   * Get Node data channel
   * 
   * @param {object} config - Configuration object for DC
-  * @returns {DataChannel}
+  * @returns {st.net.DataChannel}
   */
 
 

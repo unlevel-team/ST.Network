@@ -16,11 +16,12 @@ var express = require('express');
  * Use with Server control service
  * 
  * @class
+ * @memberof st.net.scs_routes
  * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Counter for messages
  * 
- * @property {ServerNetManager} serverNetManager - Nodes manager
+ * @property {st.net.services.ServerNetManager} serverNetManager - Nodes manager
  * 
  * 
  */
@@ -31,7 +32,7 @@ var SCS_RouteNetServer = function () {
   * 
   * @constructs SCS_RouteNetServer
   * 
-  * @param {ServerNetManager} serverNetManager - Nodes manager
+  * @param {st.net.services.ServerNetManager} serverNetManager - Server Net manager
   * @param {object} expressRoute - Express route object
   * 
   */

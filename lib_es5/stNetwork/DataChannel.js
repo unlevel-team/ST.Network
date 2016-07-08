@@ -2,10 +2,15 @@
 
 /**
  * DataChannel library
- * 
+ *
  * Provides data channels to ST network
- * 
- * 
+ *
+ *
+ */
+
+/**
+ * Import EventEmitter
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -16,6 +21,25 @@ var EventEmitter = require('events').EventEmitter;
 
 /**
  * DataChannel CONSTANTS
+ * 
+ * @memberof st.net
+ * 
+ * @property {object} Config - Configuration
+ * @property {string} Config.DCtype_socketio - DC type socketio
+ * @property {string} Config.DCtype_udp - DC type UDP
+ * @property {string} Config.MSGType_Normal - MSG type normal
+ * @property {string} Config.DataType_JSON - DATA type JSON
+ * @property {string} Config.modeIN - Mode IN
+ * @property {string} Config.modeOUT - Mode OUT
+ * 
+ * 
+ * @property {object} States - States
+ * @property {object} States.DCstate_Config - Config state
+ * @property {object} States.DCstate_Ready - Ready state
+ * @property {object} States.DCstate_Working - Working state
+ * @property {object} States.DCstate_Stop - Stop state
+ * 
+ * 
  */
 var DataChannel_CONSTANTS = {
 	"Config": {
@@ -69,11 +93,28 @@ var DataChannel_CONSTANTS = {
 
 /**
  * Data message
+ *
+ * @class
+ * @memberof st.net
+ * @property {string} type - Type of message
+ * @property {string} typeExtra - Extra type property
+ * @property {string} dataType - Data type
+ * @property {object} msg - Message payload
  */
 
-var DataMessage = function DataMessage(msg) {
+var DataMessage =
+
+/**
+ * @constructs DataMessage
+ *
+ * @param {object} msg - Message payload object
+ */
+function DataMessage(msg) {
 	_classCallCheck(this, DataMessage);
 
+	/**
+  * @param type Message type
+  */
 	this.type = DataChannel_CONSTANTS.Config.MSGType_Normal;
 	this.typeExtra = null;
 	this.dataType = DataChannel_CONSTANTS.Config.DataType_JSON;
@@ -84,10 +125,26 @@ var DataMessage = function DataMessage(msg) {
 
 /**
  * Data channel
+ * 
+ * @class
+ * @memberof st.net
+ * @property {DataMessage[]} messagesList - Messages list
+ * @property {EventEmitter} eventEmitter - Object for emit events
+ * @property {object} server - Server object
+ * @property {object} socket - Socket object
+ * @property {object} _mainLoop - Mainloop reference
+ * @property {object} config - Configuration object
  */
 
 
 var DataChannel = function () {
+
+	/**
+  * 
+  * @constructs DataChannel
+  * @param {object} config - Configuration object
+  */
+
 	function DataChannel(config) {
 		_classCallCheck(this, DataChannel);
 
@@ -178,6 +235,8 @@ var DataChannel = function () {
 
 		/**
    * Send message
+   *
+   * @param {object} msg - Message payload
    */
 
 	}, {
@@ -208,10 +267,14 @@ var DataChannel = function () {
 
 			dc._mainLoop = setInterval(function () {
 				if (dc.state === dc.CONSTANTS.States.DCstate_Working) {
-					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Tick); // Emit event MainLoop_Tick
+
+					// Emit event MainLoop_Tick
+					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Tick);
 				} else {
-						dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Stop); // Emit event MainLoop_Stop
-					}
+
+					// Emit event MainLoop_Stop
+					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Stop);
+				}
 			}, dc.config.loopTime);
 		}
 
@@ -233,11 +296,43 @@ var DataChannel = function () {
 }();
 
 /**
+ * The SearchResult_ByTypeExtra result object.
+ * 
+ * @typedef {Object} SearchResult_ByTypeExtra
+ * @memberof st.net.DataChannelsManager
+ * @type Object
+ * @property {(st.net.DataMessage[]|null)} messages - The messages list, may be null.
+ * @property {number} numMessages - Number of messages.
+ * 
+ */
+
+/**
+ * The SearchResult_ByTypeExtra result object.
+ * 
+ * @typedef {Object} SearchResult_ByID
+ * @memberof st.net.DataChannelsManager
+ * @type Object
+ * @property {(st.net.DataChannel|null)} dataChannel - The Data channel, may be null.
+ * @property {number} position - Position in list.
+ * 
+ */
+
+/**
  * Data channels manager
+ *
+ * @class
+ * @memberof st.net
+ * @property {st.net.DataChannel[]} channelsList - Channels list
  */
 
 
 var DataChannelsManager = function () {
+
+	/**
+  *
+  * @constructs DataChannelsManager
+  */
+
 	function DataChannelsManager() {
 		_classCallCheck(this, DataChannelsManager);
 
@@ -249,6 +344,9 @@ var DataChannelsManager = function () {
 
 	/**
   * Get Data channel
+  *
+  * @param {object} config - Configuration object
+  * @returns {st.net.DataChannel}
   */
 
 
@@ -258,6 +356,8 @@ var DataChannelsManager = function () {
 
 		/**
    * Add data channel
+   * 
+   * @param {st.net.DataChannel} dch - Data channel object
    */
 		value: function addDataChannel(dch) {
 
@@ -279,6 +379,8 @@ var DataChannelsManager = function () {
 
 		/**
    * Remove data channel
+   * 
+   * @param {string} dchID - Data channel ID
    */
 
 	}, {
@@ -306,6 +408,9 @@ var DataChannelsManager = function () {
 
 		/**
    * Returns data channel searched by id
+   * 
+   * @param {string} dchID - Data channel ID
+   * @returns {st.net.DataChannelsManager.SearchResult_ByID}
    */
 
 	}, {
@@ -352,6 +457,10 @@ var DataChannelsManager = function () {
 
 		/**
    * Returns Messages searched by Message.typeExtra
+   * 
+   * @param {string} typeExtra - Type extra
+   * @param {st.net.DataMessage[]} msgList - Message list
+   * @returns {st.net.DataChannelsManager.SearchResult_ByTypeExtra}
    */
 
 	}, {

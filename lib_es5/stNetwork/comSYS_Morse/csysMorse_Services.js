@@ -26,6 +26,8 @@ var TBind_Morse = require("./COMsys_Morse.js").TBind_Morse;
  * 
  * 
  * @class
+ * @memberof st.net.comsys_morse
+ * 
  * @property {object} comSYS - The COMSystem.
  * @property {object} tBind - The TBind.
  * 
@@ -120,6 +122,8 @@ var TBind_Morse_Service = function () {
  * Communications System Service
  * 
  * @class
+ * @memberof st.net.comsys_morse
+ * 
  */
 
 
@@ -135,6 +139,11 @@ var COMSys_Morse_Service = function () {
 		this.comSYS = comSYS;
 		this.CONSTANTS = comSYS.CONSTANTS;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(COMSys_Morse_Service, [{
 		key: "initialize",

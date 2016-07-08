@@ -47,7 +47,8 @@ var COMSys_Morse_Service = require('./csysMorse_Services.js').COMSys_Morse_Servi
  * 
  * 
  * @class
- * @implements TBind_Morse_Service
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.TBind_Morse_Service
  * 
  */
 
@@ -101,12 +102,23 @@ var TBind_Morse_Srv_Server = function (_TBind_Morse_Service) {
 
 /**
  * Communications System Service
+ * <pre>
  * Role Server
+ * </pre>
+ * 
+ * @class
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.COMSys_Morse_Service
  */
 
 
 var COMSys_Morse_Srv_Server = function (_COMSys_Morse_Service) {
 	_inherits(COMSys_Morse_Srv_Server, _COMSys_Morse_Service);
+
+	/**
+  * 
+  * @constructs COMSys_Morse_Srv_Server
+  */
 
 	function COMSys_Morse_Srv_Server(comSYS) {
 		_classCallCheck(this, COMSys_Morse_Srv_Server);

@@ -19,16 +19,18 @@ var bodyParser = require('body-parser');
 
 /**
  * Routes for Net of Nodes
+ * <pre>
  * Use with Server control service
+ * </pre>
  * 
  * @class
- * 
+ * @memberof st.net.scs_routes
  * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Counter for messages
  * 
  * @property {NodesManager} nodesManager - Nodes manager
- * @property {NodesNetManager} nodesNetManager - Nodes Net manager
+ * @property {st.net.NodesNetManager} nodesNetManager - Nodes Net manager
  * 
  */
 
@@ -39,7 +41,7 @@ var SCS_RouteNetNodes = function () {
   * @constructs SCS_RouteNetNodes
   * 
   * @param {NodesManager} nodesManager - Nodes manager
-  * @param {NodesNetManager} nodesNetManager - Nodes Net manager
+  * @param {st.net.services.NodesNetManager} nodesNetManager - Nodes Net manager
   * @param {object} expressRoute - Express route object
   * 
   */

@@ -11,9 +11,6 @@
  * 
  * v. Morse
  * 
- * @requires TBind_Morse
- * @requires COMSystem_Morse
- * 
  * @ignore
  */
 
@@ -50,62 +47,77 @@ var COMSys_Morse_Srv_Server = require('./csysMorse_ServerServices.js').COMSys_Mo
  * ThingBind for role Server
  * 
  * @class
- * @implements TBind_Morse
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.TBind_Morse
+ * 
  */
 
 var TBind_Morse_Server = function (_TBind_Morse) {
-  _inherits(TBind_Morse_Server, _TBind_Morse);
+	_inherits(TBind_Morse_Server, _TBind_Morse);
 
-  /**
-   * @constructs TBind_Morse_Server
-   */
+	/**
+  * @constructs TBind_Morse_Server
+  */
 
-  function TBind_Morse_Server(type, source, target, options) {
-    _classCallCheck(this, TBind_Morse_Server);
+	function TBind_Morse_Server(type, source, target, options) {
+		_classCallCheck(this, TBind_Morse_Server);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TBind_Morse_Server).call(this, type, source, target, options));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TBind_Morse_Server).call(this, type, source, target, options));
 
-    _this._bindFunction = null;
-    return _this;
-  }
+		_this._bindFunction = null;
+		return _this;
+	}
 
-  return TBind_Morse_Server;
+	return TBind_Morse_Server;
 }(TBind_Morse);
 
 /**
  * Communications System for Server role
  *  
+ * @class
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.COMSystem_Morse
  */
 
 
 var CSYS_Morse_Server = function (_COMSystem_Morse) {
-  _inherits(CSYS_Morse_Server, _COMSystem_Morse);
+	_inherits(CSYS_Morse_Server, _COMSystem_Morse);
 
-  function CSYS_Morse_Server(config) {
-    _classCallCheck(this, CSYS_Morse_Server);
+	/**
+  * 
+  * @constructs CSYS_Morse_Server
+  */
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(CSYS_Morse_Server).call(this, config));
-  }
+	function CSYS_Morse_Server(config) {
+		_classCallCheck(this, CSYS_Morse_Server);
 
-  _createClass(CSYS_Morse_Server, [{
-    key: 'initialize',
-    value: function initialize() {
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(CSYS_Morse_Server).call(this, config));
+	}
 
-      _get(Object.getPrototypeOf(CSYS_Morse_Server.prototype), 'initialize', this).call(this);
+	/**
+  * Initialize
+  */
 
-      var comSYS = this;
-      //		let config = comSYS.config;
 
-      comSYS._service = new COMSys_Morse_Srv_Server(comSYS);
-    }
-  }]);
+	_createClass(CSYS_Morse_Server, [{
+		key: 'initialize',
+		value: function initialize() {
 
-  return CSYS_Morse_Server;
+			_get(Object.getPrototypeOf(CSYS_Morse_Server.prototype), 'initialize', this).call(this);
+
+			var comSYS = this;
+			//		let config = comSYS.config;
+
+			comSYS._service = new COMSys_Morse_Srv_Server(comSYS);
+		}
+	}]);
+
+	return CSYS_Morse_Server;
 }(COMSystem_Morse);
 
 var cysMorse_roleServer_Lib = {
-  "TBind_Morse_Server": TBind_Morse_Server,
-  "CSYS_Morse_Server": CSYS_Morse_Server
+	"TBind_Morse_Server": TBind_Morse_Server,
+	"CSYS_Morse_Server": CSYS_Morse_Server
 };
 
 module.exports = cysMorse_roleServer_Lib;

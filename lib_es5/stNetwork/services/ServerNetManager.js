@@ -30,7 +30,8 @@ var DataChannelsManager = require('../DataChannel.js').DataChannelsManager;
  * Server net manager
  * 
  * @class
- * @implements DataChannelsManager
+ * @memberof st.net.services
+ * @implements st.net.DataChannelsManager
  * 
  * @property {object} config - Configuration object
  * 

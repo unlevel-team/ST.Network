@@ -30,7 +30,8 @@ var DataChannelsManager = require('../DataChannel.js').DataChannelsManager;
  * Node net manager
  * 
  * @class
- * @implements DataChannelsManager
+ * @memberof st.net.services
+ * @implements st.net.DataChannelsManager
  */
 
 var NodeNetManager = function (_DataChannelsManager) {
@@ -105,7 +106,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 		/**
    * Remove data channel from node
    * 
-   * @param {(DataChannel|string)} dc - could be DC.id or DC object
+   * @param {(st.net.DataChannel|string)} dc - could be DC.id or DC object
    */
 
 	}, {
@@ -141,7 +142,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 		/**
    * Map control events for DC
    * 
-   * @param {DataChannel} dch - Data channel object
+   * @param {st.net.DataChannel} dch - Data channel object
    */
 
 	}, {
@@ -174,7 +175,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 		/**
    * UnMap control events for DC
    * 
-   * @param {DataChannel} dch - Data channel object
+   * @param {st.net.DataChannel} dch - Data channel object
    */
 
 	}, {
@@ -192,7 +193,7 @@ var NodeNetManager = function (_DataChannelsManager) {
 		/**
    * Set data channel options
    * 
-   * @param {DataChannel} dch - Data channel object
+   * @param {st.net.DataChannel} dch - Data channel object
    * @param {object} options - Options object
    * @param {number} [options.loopTime] - Looptime 
    * @param {string} [options.netLocation] - Net location 
@@ -227,8 +228,8 @@ var NodeNetManager = function (_DataChannelsManager) {
    * Event ChannelInitialized
    * 
    * @param {object} data - Event data 
-   * @param {DataChannel} dch - Data Channel object
-   * @param {NodeNetManager} nnetm - Node Net manager object
+   * @param {st.net.DataChannel} dch - Data Channel object
+   * @param {st.net.services.NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -250,8 +251,8 @@ var NodeNetManager = function (_DataChannelsManager) {
    * Event ChannelStarted
    * 
    * @param {object} data - Event data 
-   * @param {DataChannel} dch - Data Channel object
-   * @param {NodeNetManager} nnetm - Node Net manager object
+   * @param {st.net.DataChannel} dch - Data Channel object
+   * @param {st.net.services.NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -273,8 +274,8 @@ var NodeNetManager = function (_DataChannelsManager) {
    * Event ChannelStopped
    * 
    * @param {object} data - Event data 
-   * @param {DataChannel} dch - Data Channel object
-   * @param {NodeNetManager} nnetm - Node Net manager object
+   * @param {st.net.DataChannel} dch - Data Channel object
+   * @param {st.net.services.NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {
@@ -296,8 +297,8 @@ var NodeNetManager = function (_DataChannelsManager) {
    * Event ChannelClosed
    * 
    * @param {object} data - Event data 
-   * @param {DataChannel} dch - Data Channel object
-   * @param {NodeNetManager} nnetm - Node Net manager object
+   * @param {st.net.DataChannel} dch - Data Channel object
+   * @param {st.net.services.NodeNetManager} nnetm - Node Net manager object
    */
 
 	}, {

@@ -2,12 +2,14 @@
 
 /**
  * COMSystem library
+ * <pre>
  * for role Node
  * 
  * Provides communications system to ST network
  * 
  * 
  * v. Morse
+ * </pre>
  * 
  * @ignore
  */
@@ -43,10 +45,13 @@ var COMSys_Morse_Service = require('./csysMorse_Services.js').COMSys_Morse_Servi
 
 /**
  * Bind Service
+ * <pre>
  * Role Node
+ * </pre>
  * 
  * @class
- * @implements {TBind_Morse_Service}
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.TBind_Morse_Service
  */
 
 var TBind_Morse_Srv_Node = function (_TBind_Morse_Service) {
@@ -98,9 +103,15 @@ var TBind_Morse_Srv_Node = function (_TBind_Morse_Service) {
 
 /**
  * Communications System Service
+ * <pre>
  * Role Node
+ * </pre>
+ * 
  * @class
- * @implements {COMSys_Morse_Service}
+ * @memberof st.net.comsys_morse
+ * @implements st.net.comsys_morse.COMSys_Morse_Service
+ * 
+ * 
  */
 
 

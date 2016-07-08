@@ -1,9 +1,16 @@
 "use strict";
 
 /**
+ * SomeThins project
+ * 
+ * @namespace st
+ */
+
+/**
  * SomeThings Network library
  * 
- * @ignore
+ * @namespace st.net
+ * @memberof  st
  */
 
 /**
@@ -38,13 +45,16 @@ function _get_Services() {
 	return _lib;
 }
 
+/**
+ * 
+ */
 var stNetwork_Lib = {
 
 	"DataMessage": dataChannel_Lib.DataMessage,
 	"DataChannel": dataChannel_Lib.DataChannel,
 	"DataChannelsManager": dataChannel_Lib.DataChannelsManager,
 
-	"DC_SocketIO": _get_DC_SocketIO_Lib,
+	"get_DC_SocketIO": _get_DC_SocketIO_Lib,
 
 	"get_SCS_RouteNet": _get_SCS_RouteNet,
 

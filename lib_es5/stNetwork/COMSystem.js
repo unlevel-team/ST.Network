@@ -27,6 +27,8 @@ var DataMessage = require('./DataChannel.js').DataMessage;
 /**
  * COMSystem constants
  * 
+ * @memberof st.net
+ * 
  * @static
  */
 var COMSystem_CONSTANTS = {
@@ -82,6 +84,7 @@ var COMSystem_CONSTANTS = {
  * ThingBind
  * 
  * @class
+ * @memberof st.net
  * 
  * @property {string} version - Version
  * @property {string} bindID - Bind ID
@@ -99,6 +102,12 @@ var ThingBind = function () {
 
 	/**
   * @constructs ThingBind
+  * 
+  * @param {string} type - Type
+  * @param {object} source - Source
+  * @param {object} target - Target
+  * @param {object} options - Options
+  * 
   */
 
 	function ThingBind(type, source, target, options) {
@@ -257,10 +266,12 @@ var ThingBind = function () {
  * COMSystem
  * 
  * @class
+ * @memberof st.net
+ * 
  * @property {string} version - Version
  * @property {object} config - Configuration object
  * @property {object} controlChannel - Control channel object
- * @property {ThingBind[]} thingsBindings - ThingBinds list
+ * @property {st.net.ThingBind[]} thingsBindings - ThingBinds list
  * 
  */
 
@@ -307,9 +318,9 @@ var COMSystem = function () {
 		/**
    * Add bind
    * 
-   * @param tbind The ThingBind object
-   * @param synchro Synchronization (true or false)
-   * @param options Options
+   * @param {st.net.ThingBind} tbind - The ThingBind object
+   * @param {boolean} synchro - Synchronization (true or false)
+   * @param {object} options - Options
    */
 
 	}, {
@@ -371,9 +382,9 @@ var COMSystem = function () {
 		/**
    * Remove Bind
    * 
-   * @param tbind The ThingBind object
-   * @param synchro Synchronization (true or false)
-   * @param options Options
+   * @param {st.net.ThingBind} tbind - The ThingBind object
+   * @param {boolean} synchro - Synchronization (true or false)
+   * @param {object} options - Options
    */
 
 	}, {
@@ -418,8 +429,10 @@ var COMSystem = function () {
 /**
  * Get COMSystem
  * 
+ * @memberof st.net
+ * 
  * @param {object} config - Configuration object
- * @returns {COMSystem}
+ * @returns {st.net.COMSystem}
  */
 
 
