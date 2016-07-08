@@ -1,6 +1,6 @@
 {
   "name": "st.network",
-  "version": "0.0.1-beta00-build008",
+  "version": "0.0.1-beta00-build009",
   "description": "ST Network",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
@@ -16,6 +16,7 @@
     "lib/",
     "lib_es5/",
     "readme.md",
+    "jsdoc_conf.json",
     "gulpfile.js"
   ],
   "main": "lib_es5/stNetwork/STNetwork.js",
