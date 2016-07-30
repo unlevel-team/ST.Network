@@ -38,7 +38,7 @@ var DataChannelsManager = require('../DataChannel.js').DataChannelsManager;
  * import NETservices_CONSTANTS
  * @ignore
  */
-var NETservices_CONSTANTS = require('./NETservices.js').NETservices_CONSTANTS;
+var NETservices_CONSTANTS = require('./NetServices.js').NETservices_CONSTANTS;
 
 /**
  * Node data channel

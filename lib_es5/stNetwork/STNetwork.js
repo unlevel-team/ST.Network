@@ -31,7 +31,7 @@ function _get_DC_SocketIO_Lib() {
 }
 
 function _get_SCS_RouteNet() {
-	var _lib = require("./scs_routes/SCS_RouteNet.js");
+	var _lib = require("./scs_Routes/SCS_RouteNet.js");
 	return _lib;
 }
 
