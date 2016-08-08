@@ -3,7 +3,7 @@
 /**
  * Server Control System - Net routes
  * 
- * @namespace st.net.scs_routes
+ * @namespace st.net.comsys_morse.scs_routes
  * @memberof st.net
  * 
  * 
@@ -39,14 +39,14 @@ var SCS_RouteNetServer = require("./SCS_RouteNetServer.js");
  * </pre>
  * 
  * @class
- * @memberof st.net.scs_routes
+ * @memberof st.net.comsys_morse.scs_routes
  * 
  * @property {NodesManager} nodesManager - Nodes manager
  * @property {st.net.services.NodesNetManager} nodesNetManager - Nodes Net manager
  * @property {object} expressRoute - Express route object
  * 
- * @property {st.net.scs_routes.SCS_RouteNetNodes} routesforNodes - Routes for Nodes
- * @property {st.net.scs_routes.SCS_RouteNetServer} routesforServer - Routes for Server
+ * @property {st.net.comsys_morse.scs_routes.SCS_RouteNetNodes} routesforNodes - Routes for Nodes
+ * @property {st.net.comsys_morse.scs_routes.SCS_RouteNetServer} routesforServer - Routes for Server
  * 
  */
 
@@ -58,26 +58,27 @@ var SCS_RouteNet = function () {
   * 
   * @param {NodesManager} nodesManager - Nodes manager
   * @param {st.net.services.NodesNetManager} nodesNetManager - Nodes Net manager
+  * @param {st.net.services.ServerNetManager} serverNetManager - Server Net manager
   * 
   */
 
 	function SCS_RouteNet(nodesManager, nodesNetManager, serverNetManager) {
 		_classCallCheck(this, SCS_RouteNet);
 
-		var routerNet = this;
+		var _routerNet = this;
 
-		routerNet.expressRoute = null;
-		routerNet.messages = 0;
+		_routerNet.expressRoute = null;
+		_routerNet.messages = 0;
 
-		routerNet.nodesManager = nodesManager;
-		routerNet.nodesNetManager = nodesNetManager;
-		routerNet.serverNetManager = serverNetManager;
+		_routerNet.nodesManager = nodesManager;
+		_routerNet.nodesNetManager = nodesNetManager;
+		_routerNet.serverNetManager = serverNetManager;
 
-		routerNet.routesforNodes = null;
-		routerNet.routesforServer = null;
+		_routerNet.routesforNodes = null;
+		_routerNet.routesforServer = null;
 
-		routerNet.initialize();
-		routerNet.mapServiceRoutes();
+		_routerNet.initialize();
+		_routerNet.mapServiceRoutes();
 	}
 
 	/**
@@ -89,34 +90,38 @@ var SCS_RouteNet = function () {
 		key: "initialize",
 		value: function initialize() {
 
-			var routerNet = this;
+			var _routerNet = this;
 
-			if (routerNet.expressRoute !== null) {
+			if (_routerNet.expressRoute !== null) {
 				throw "Already initialized";
 			}
 
-			routerNet.expressRoute = express.Router();
+			_routerNet.expressRoute = express.Router();
 
-			routerNet.routesforNodes = new SCS_RouteNetNodes(routerNet.nodesManager, routerNet.nodesNetManager);
-			routerNet.routesforServer = new SCS_RouteNetServer(routerNet.serverNetManager);
+			_routerNet.routesforNodes = new SCS_RouteNetNodes(_routerNet.nodesManager, _routerNet.nodesNetManager);
+			_routerNet.routesforServer = new SCS_RouteNetServer(_routerNet.serverNetManager);
 		}
 
 		/**
    * Map service routes
+   * <pre>
+   * Nodes mapped to 'Nodes'
+   * Server mapped to 'Server'
+   * </pre>
    */
 
 	}, {
 		key: "mapServiceRoutes",
 		value: function mapServiceRoutes() {
 
-			var routerNet = this;
+			var _routerNet = this;
 
-			if (routerNet.expressRoute === null) {
+			if (_routerNet.expressRoute === null) {
 				throw "Not initialized";
 			}
 
-			routerNet.expressRoute.use('/Nodes', routerNet.routesforNodes.expressRoute);
-			routerNet.expressRoute.use('/Server', routerNet.routesforServer.expressRoute);
+			_routerNet.expressRoute.use('/Nodes', _routerNet.routesforNodes.expressRoute);
+			_routerNet.expressRoute.use('/Server', _routerNet.routesforServer.expressRoute);
 		}
 	}]);
 

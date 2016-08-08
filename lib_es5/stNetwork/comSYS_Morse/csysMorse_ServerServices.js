@@ -76,11 +76,11 @@ var TBind_Morse_Srv_Server = function (_TBind_Morse_Service) {
 		key: '_event_Unbind',
 		value: function _event_Unbind(data) {
 
-			var service = this;
-			var tBind = service.tBind;
+			var _service = this;
+			var _tBind = _service.tBind;
 
-			var comSYS = service.comSYS;
-			var _config = comSYS.config;
+			var _comSYS = _service.comSYS;
+			var _config = _comSYS.config;
 
 			var socket = _config.controlChannel.socket;
 
@@ -90,7 +90,7 @@ var TBind_Morse_Srv_Server = function (_TBind_Morse_Service) {
 			if (synchro) {
 
 				// Send Message UnBind
-				socket.emit(comSYS.CONSTANTS.Messages.UnBind, {
+				socket.emit(_comSYS.CONSTANTS.Messages.UnBind, {
 					"bindID": options.bindID
 				});
 			}

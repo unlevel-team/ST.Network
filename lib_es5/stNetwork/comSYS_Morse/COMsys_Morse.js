@@ -148,6 +148,7 @@ var COMSystem_Morse = function (_COMSystem) {
   * @constructs COMSystem_Morse
   * 
   * @param {object} config - Configuration object
+  * @param {string} config.role - Role of the COM System. Could be 'node' or 'server'
   */
 
 	function COMSystem_Morse(config) {
@@ -155,11 +156,13 @@ var COMSystem_Morse = function (_COMSystem) {
 
 		var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(COMSystem_Morse).call(this, config));
 
-		_this2.MorseCONSTANTS = COMSystem_Morse_CONSTANTS;
+		var _comSYS = _this2;
 
-		_this2._service = null;
+		_comSYS.MorseCONSTANTS = COMSystem_Morse_CONSTANTS;
 
-		_this2.CONSTANTS.Config.Version = COMSystem_Morse_CONSTANTS.Config.Version;
+		_comSYS._service = null;
+
+		_comSYS.CONSTANTS.Config.Version = COMSystem_Morse_CONSTANTS.Config.Version;
 
 		return _this2;
 	}
@@ -181,32 +184,6 @@ var COMSystem_Morse = function (_COMSystem) {
 			if (_config.role === undefined) {
 				throw "role is required.";
 			}
-
-			if (_config.sensorManager === undefined) {
-				throw "sensorManager is required.";
-			}
-
-			if (_config.actuatorsManager === undefined) {
-				throw "actuatorsManager is required.";
-			}
-
-			//		comSYS.role = _config.role;
-			//		
-			//		switch (comSYS.role) {
-			//		
-			//			case comSYS.CONSTANTS.Config.Role_Node:
-			//				comSYS._init_RoleNode();
-			//				break;
-			//				
-			//				
-			//			case comSYS.CONSTANTS.Config.Role_Server:
-			//				comSYS._init_RoleServer();
-			//				break;
-			//	
-			//			default:
-			//				throw "Bad Role.";
-			////				break;
-			//		}
 		}
 
 		/**

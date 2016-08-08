@@ -16,7 +16,7 @@ var express = require('express');
  * Use with Server control service
  * 
  * @class
- * @memberof st.net.scs_routes
+ * @memberof st.net.comsys_morse.scs_routes
  * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Counter for messages

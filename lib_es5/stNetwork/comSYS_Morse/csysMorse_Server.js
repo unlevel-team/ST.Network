@@ -91,7 +91,13 @@ var CSYS_Morse_Server = function (_COMSystem_Morse) {
 	function CSYS_Morse_Server(config) {
 		_classCallCheck(this, CSYS_Morse_Server);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(CSYS_Morse_Server).call(this, config));
+		var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(CSYS_Morse_Server).call(this, config));
+
+		var _comSYS = _this2;
+
+		_comSYS._scs_RouteNet = null;
+
+		return _this2;
 	}
 
 	/**
@@ -109,6 +115,66 @@ var CSYS_Morse_Server = function (_COMSystem_Morse) {
 			//		let config = comSYS.config;
 
 			comSYS._service = new COMSys_Morse_Srv_Server(comSYS);
+		}
+
+		/**
+   * Get Server Control Services routes
+   * for network
+   * 
+   * @param {object} options - Options object
+   * @param {st.net.COMSystem} [options.comSYS] - COM System object
+   * @param {object} options.nodesManager - Nodes manager
+   * @param {st.net.services.NodesNetManager} options.nodesNetManager - Nodes Net manager
+   * @param {st.net.services.ServerNetManager} options.serverNetManager - Server Net manager
+   * 
+   * @throws Exception
+   * 
+   * @returns {st.net.comsys_morse.scs_routes.SCS_RouteNet}
+   * 
+   */
+
+	}, {
+		key: 'getSCSRoutes',
+		value: function getSCSRoutes(options) {
+
+			var _comSYS = this;
+
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
+			if (options.comSYS !== undefined) {
+				_comSYS = options.comSYS;
+			}
+
+			if (options.nodesManager === undefined) {
+				throw "nodesManager is required.";
+			}
+			var _nodesManager = options.nodesManager;
+
+			if (options.nodesNetManager === undefined) {
+				throw "nodesNetManager is required.";
+			}
+			var _nodesNetManager = options.nodesNetManager;
+
+			if (options.serverNetManager === undefined) {
+				throw "serverNetManager is required.";
+			}
+			var _serverNetManager = options.serverNetManager;
+
+			if (_comSYS._scs_RouteNet === null) {
+
+				var SCS_RouteNet = require('./scs_Routes/SCS_RouteNet.js');
+
+				try {
+					_comSYS._scs_RouteNet = new SCS_RouteNet(_nodesManager, _nodesNetManager, _serverNetManager);
+				} catch (e) {
+					// TODO: handle exception
+					throw "Error in route Net." + e;
+				}
+			}
+
+			return _comSYS._scs_RouteNet;
 		}
 	}]);
 

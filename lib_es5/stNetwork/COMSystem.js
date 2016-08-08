@@ -70,7 +70,6 @@ var COMSystem_CONSTANTS = {
 		"setBindOptions": "Set BindOptions",
 		"BindOptionsUpdated": "BindOptionsUpdated",
 		"startBind": "Start Bind",
-
 		"BindStarted": "Bind Started",
 		"UnBind": "UnBind",
 		"BindFree": "BindFree",
@@ -285,12 +284,14 @@ var COMSystem = function () {
 	function COMSystem(config) {
 		_classCallCheck(this, COMSystem);
 
-		this.CONSTANTS = COMSystem_CONSTANTS;
-		this.version = this.CONSTANTS.Config.Version;
-		this.config = config;
+		var _comSYS = this;
 
-		this.controlChannel = null;
-		this.thingsBindings = [];
+		_comSYS.CONSTANTS = COMSystem_CONSTANTS;
+		_comSYS.version = _comSYS.CONSTANTS.Config.Version;
+		_comSYS.config = config;
+
+		_comSYS.controlChannel = null;
+		_comSYS.thingsBindings = [];
 	}
 
 	/**
