@@ -1,10 +1,14 @@
 {
   "name": "st.network",
-  "version": "0.0.1-beta00-build010",
+  "version": "0.0.1-beta00-build011",
   "description": "ST Network",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
   "readmeFilename": "readme.md",
+  "repository" : { 
+	  "type" : "git",
+	  "url" : "https://github.com/unlevel-team/ST.Network.git"
+  },
   "scripts": {
     "gulp": "gulp",
     "toES5": "gulp babel",
