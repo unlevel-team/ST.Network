@@ -3,10 +3,21 @@
 /**
  * COMSystem library
  * 
+ * <pre>
  * Provides communications system to ST network
  * 
  * 
  * v. Morse
+ * </pre>
+ * 
+ * @namespace st.net.comsys_morse
+ * @memberof st.net
+ * 
+ */
+
+/**
+ * Import DataMessage
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21,12 +32,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var DataMessage = require('../DataChannel.js').DataMessage;
 
+/**
+ * Import ThingBind
+ * @ignore
+ */
 var ThingBind = require('../COMSystem.js').ThingBind;
+
+/**
+ * Import COMSystem
+ * @ignore
+ */
 var COMSystem = require('../COMSystem.js').COMSystem;
 
-var COMSys_Morse_Srv_Node = require('./csysMorse_Services.js').COMSys_Morse_Srv_Node;
-var COMSys_Morse_Srv_Server = require('./csysMorse_Services.js').COMSys_Morse_Srv_Server;
+/**
+ * Import COMSystem_CONSTANTS
+ * @ignore
+ */
+var COMSystem_CONSTANTS = require('../COMSystem.js').COMSystem_CONSTANTS;
 
+/**
+ * COMSystem Morse CONSTANTS
+ * 
+ * @memberof st.net.comsys_morse
+ * 
+ */
 var COMSystem_Morse_CONSTANTS = {
 	"Config": {
 		"Version": "Morse"
@@ -34,11 +63,22 @@ var COMSystem_Morse_CONSTANTS = {
 };
 
 /**
- * ThingBind
+ * TBind_Morse
+ * 
+ * @class
+ * @memberof st.net.comsys_morse
+ * @implements st.net.ThingBind
+ * 
  */
 
 var TBind_Morse = function (_ThingBind) {
 	_inherits(TBind_Morse, _ThingBind);
+
+	/**
+  * @constructs TBind_Morse
+  * 
+  * 
+  */
 
 	function TBind_Morse(type, source, target, options) {
 		_classCallCheck(this, TBind_Morse);
@@ -89,171 +129,48 @@ var TBind_Morse = function (_ThingBind) {
 }(ThingBind);
 
 /**
- * ThingBindfor role Node
- * 
- */
-
-
-var TBind_Morse_Node = function (_TBind_Morse) {
-	_inherits(TBind_Morse_Node, _TBind_Morse);
-
-	function TBind_Morse_Node(type, source, target, options) {
-		_classCallCheck(this, TBind_Morse_Node);
-
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(TBind_Morse_Node).call(this, type, source, target, options));
-	}
-
-	/**
-  * Bind DC to Sensor
-  */
-
-
-	_createClass(TBind_Morse_Node, [{
-		key: '_init_DCtoSensor',
-		value: function _init_DCtoSensor() {
-
-			var tbind = this;
-
-			var dc = tbind.target;
-			var sensor = tbind.source;
-
-			if (tbind.options === undefined || tbind.options.bindID === undefined) {
-				throw "This bind requires an ID.";
-			}
-
-			tbind.bindID = tbind.CONSTANTS.Config.BindType_DCtoSensor + tbind.options.bindID; // Set bind ID
-
-			// Define bind function
-			tbind._bindFunction = function (data) {
-
-				if (tbind.state !== tbind.CONSTANTS.States.State_Working) {
-					return;
-				}
-
-				if (tbind.options.bindFunction) {
-					tbind.options.bindFunction(data);
-				}
-
-				var msg = new DataMessage(data);
-				msg.typeExtra = tbind.CONSTANTS.Config.Version;
-				msg._Morse = {
-					"bindID": tbind.bindID
-				};
-
-				dc.sendMessage(msg);
-			};
-
-			// Map event SensorData
-			sensor.eventEmitter.on(sensor.CONSTANTS.Events.SensorData, tbind._bindFunction);
-
-			tbind.state = tbind.CONSTANTS.States.State_Ready;
-		}
-
-		/**
-   * Bind DC to Actuator
-   */
-
-	}, {
-		key: '_init_DCtoActuator',
-		value: function _init_DCtoActuator() {
-
-			var tbind = this;
-			var dc = tbind.source;
-			var actuator = tbind.target;
-
-			if (tbind.options === undefined || tbind.options.bindID === undefined) {
-				throw "This bind requires an ID.";
-			}
-
-			if (tbind.options.comSYS === undefined) {
-				throw "This bind requires a comSYS.";
-			}
-
-			var comSYS = tbind.options.comSYS;
-
-			tbind.bindID = tbind.CONSTANTS.Config.BindType_DCtoActuator + tbind.options.bindID; // Set bind ID
-
-			// Define bind function
-			tbind._bindFunction = function (data) {
-
-				if (tbind.state !== tbind.CONSTANTS.States.State_Working) {
-					return;
-				}
-
-				if (tbind.options.bindFunction) {
-					tbind.options.bindFunction(data);
-				}
-
-				actuator.emit(actuator.CONSTANTS.Events.ActuatorData, data); // Emit event ActuatorData
-			};
-
-			comSYS.bindDC(dc); // Bind Communications system to DC
-
-			// Map event `bindID`
-			comSYS.eventEmitter.on(tbind.bindID, tbind._bindFunction);
-		}
-
-		/**
-   * Unbind
-   */
-
-	}, {
-		key: 'unbind',
-		value: function unbind() {
-
-			var tbind = this;
-
-			switch (tbind.type) {
-
-				case tbind.CONSTANTS.Config.BindType_DCtoSensor:
-
-					var sensor = tbind.target;
-
-					// UnMap event SensorData
-					sensor.eventEmitter.removeListener(sensor.CONSTANTS.Events.SensorData, tbind._bindFunction);
-					break;
-
-				case tbind.CONSTANTS.Config.BindType_DCtoActuator:
-
-					var comSYS = tbind.options.comSYS;
-
-					// UnMap event `bindID`
-					comSYS.eventEmitter.removeListener(tbind.bindID, tbind._bindFunction);
-					break;
-
-				default:
-					break;
-
-			}
-
-			_get(Object.getPrototypeOf(TBind_Morse_Node.prototype), 'unbind', this).call(this);
-		}
-	}]);
-
-	return TBind_Morse_Node;
-}(TBind_Morse);
-
-/**
  * Communications System
+ * 
+ * Requires role configuration. (Server | Node)
+ * 
+ * @class
+ * @memberof st.net.comsys_morse
+ * @implements st.net.COMSystem
+ * 
  */
 
 
 var COMSystem_Morse = function (_COMSystem) {
 	_inherits(COMSystem_Morse, _COMSystem);
 
+	/**
+  * 
+  * @constructs COMSystem_Morse
+  * 
+  * @param {object} config - Configuration object
+  * @param {string} config.role - Role of the COM System. Could be 'node' or 'server'
+  */
+
 	function COMSystem_Morse(config) {
 		_classCallCheck(this, COMSystem_Morse);
 
-		var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(COMSystem_Morse).call(this, config));
+		var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(COMSystem_Morse).call(this, config));
 
-		_this3.MorseCONSTANTS = COMSystem_Morse_CONSTANTS;
+		var _comSYS = _this2;
 
-		_this3._service = null;
+		_comSYS.MorseCONSTANTS = COMSystem_Morse_CONSTANTS;
 
-		_this3.CONSTANTS.Config.Version = COMSystem_Morse_CONSTANTS.Config.Version;
+		_comSYS._service = null;
 
-		return _this3;
+		_comSYS.CONSTANTS.Config.Version = COMSystem_Morse_CONSTANTS.Config.Version;
+
+		return _this2;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(COMSystem_Morse, [{
 		key: 'initialize',
@@ -266,31 +183,6 @@ var COMSystem_Morse = function (_COMSystem) {
 
 			if (_config.role === undefined) {
 				throw "role is required.";
-			}
-
-			if (_config.sensorManager === undefined) {
-				throw "sensorManager is required.";
-			}
-
-			if (_config.actuatorsManager === undefined) {
-				throw "actuatorsManager is required.";
-			}
-
-			comSYS.role = _config.role;
-
-			switch (comSYS.role) {
-
-				case comSYS.CONSTANTS.Config.Role_Node:
-					comSYS._init_RoleNode();
-					break;
-
-				case comSYS.CONSTANTS.Config.Role_Server:
-					comSYS._init_RoleServer();
-					break;
-
-				default:
-					throw "Bad Role.";
-				//				break;
 			}
 		}
 
@@ -309,7 +201,7 @@ var COMSystem_Morse = function (_COMSystem) {
 				throw "controlChannel is required.";
 			}
 
-			comSYS._service = new COMSys_Morse_Srv_Node(comSYS);
+			//		comSYS._service = new COMSys_Morse_Srv_Node(comSYS);
 		}
 
 		/**
@@ -323,11 +215,14 @@ var COMSystem_Morse = function (_COMSystem) {
 			var comSYS = this;
 			var _config = comSYS.config;
 
-			comSYS._service = new COMSys_Morse_Srv_Server(comSYS);
+			//		comSYS._service = new COMSys_Morse_Srv_Server(comSYS);
 		}
 
 		/**
    * Bind data channel
+   * 
+   * @param {st.net.DataChannel} dc - Data channel
+   * 
    */
 
 	}, {
@@ -348,6 +243,8 @@ var COMSystem_Morse = function (_COMSystem) {
 
 		/**
    * Unbind data channel
+   * 
+   * @param {st.net.DataChannel} dc - Data channel
    */
 
 	}, {
@@ -391,10 +288,52 @@ var COMSystem_Morse = function (_COMSystem) {
 	return COMSystem_Morse;
 }(COMSystem);
 
+/**
+ * Get COMSystem
+ * 
+ * @memberof st.net.comsys_morse
+ * 
+ * @param {object} config - Configuration object
+ * 
+ * @returns {(st.net.comsys_morse.CSYS_Morse_Node|st.net.comsys_morse.CSYS_Morse_Server)} - Depends on 'config.role'
+ */
+
+
+var getCOMSystem = function getCOMSystem(config) {
+
+	if (config.role === undefined) {
+		throw "role is required.";
+	}
+
+	var comSystem = null;
+
+	switch (config.role) {
+
+		case COMSystem_CONSTANTS.Config.Role_Node:
+
+			var CSYS_Morse_Node = require('./csysMorse_Node.js').CSYS_Morse_Node;
+			comSystem = new CSYS_Morse_Node(config);
+			break;
+
+		case COMSystem_CONSTANTS.Config.Role_Server:
+
+			var CSYS_Morse_Server = require('./csysMorse_Server.js').CSYS_Morse_Server;
+			comSystem = new CSYS_Morse_Server(config);
+			break;
+
+		default:
+			throw "Bad Role.";
+		//			break;
+	}
+
+	return comSystem;
+};
+
 var cysMorse_Lib = {
 	"TBind_Morse": TBind_Morse,
-	"TBind_Morse_Node": TBind_Morse_Node,
-	"COMSystem_Morse": COMSystem_Morse
+	"COMSystem_Morse": COMSystem_Morse,
+
+	"getCOMSystem": getCOMSystem
 };
 
 module.exports = cysMorse_Lib;

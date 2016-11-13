@@ -2,10 +2,15 @@
 
 /**
  * DataChannel library
- * 
+ *
  * Provides data channels to ST network
- * 
- * 
+ *
+ *
+ */
+
+/**
+ * Import EventEmitter
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13,10 +18,28 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EventEmitter = require('events').EventEmitter;
-var net = require('net');
 
 /**
  * DataChannel CONSTANTS
+ * 
+ * @memberof st.net
+ * 
+ * @property {object} Config - Configuration
+ * @property {string} Config.DCtype_socketio - DC type socketio
+ * @property {string} Config.DCtype_udp - DC type UDP
+ * @property {string} Config.MSGType_Normal - MSG type normal
+ * @property {string} Config.DataType_JSON - DATA type JSON
+ * @property {string} Config.modeIN - Mode IN
+ * @property {string} Config.modeOUT - Mode OUT
+ * 
+ * 
+ * @property {object} States - States
+ * @property {object} States.DCstate_Config - Config state
+ * @property {object} States.DCstate_Ready - Ready state
+ * @property {object} States.DCstate_Working - Working state
+ * @property {object} States.DCstate_Stop - Stop state
+ * 
+ * 
  */
 var DataChannel_CONSTANTS = {
 	"Config": {
@@ -39,11 +62,17 @@ var DataChannel_CONSTANTS = {
 	},
 
 	"Events": {
+		"ChannelConnected": "Channel connected",
+		"ChannelDisconnected": "Channel disconnected",
+
 		"ChannelInitialized": "Channel initialized",
+		"ChannelClosed": "Channel closed",
+
 		"ChannelStart": "Channel start",
 		"ChannelStarted": "Channel started",
 		"ChannelStop": "Channel stop",
 		"ChannelStopped": "Channel stopped",
+
 		"ClientConnected": "Client Connected",
 		"ClientDisconnected": "Client Disconnected",
 
@@ -64,11 +93,28 @@ var DataChannel_CONSTANTS = {
 
 /**
  * Data message
+ *
+ * @class
+ * @memberof st.net
+ * @property {string} type - Type of message
+ * @property {string} typeExtra - Extra type property
+ * @property {string} dataType - Data type
+ * @property {object} msg - Message payload
  */
 
-var DataMessage = function DataMessage(msg) {
+var DataMessage =
+
+/**
+ * @constructs DataMessage
+ *
+ * @param {object} msg - Message payload object
+ */
+function DataMessage(msg) {
 	_classCallCheck(this, DataMessage);
 
+	/**
+  * @param type Message type
+  */
 	this.type = DataChannel_CONSTANTS.Config.MSGType_Normal;
 	this.typeExtra = null;
 	this.dataType = DataChannel_CONSTANTS.Config.DataType_JSON;
@@ -79,10 +125,26 @@ var DataMessage = function DataMessage(msg) {
 
 /**
  * Data channel
+ * 
+ * @class
+ * @memberof st.net
+ * @property {DataMessage[]} messagesList - Messages list
+ * @property {EventEmitter} eventEmitter - Object for emit events
+ * @property {object} server - Server object
+ * @property {object} socket - Socket object
+ * @property {object} _mainLoop - Mainloop reference
+ * @property {object} config - Configuration object
  */
 
 
 var DataChannel = function () {
+
+	/**
+  * 
+  * @constructs DataChannel
+  * @param {object} config - Configuration object
+  */
+
 	function DataChannel(config) {
 		_classCallCheck(this, DataChannel);
 
@@ -100,12 +162,13 @@ var DataChannel = function () {
 
 		this.state = DataChannel_CONSTANTS.States.DCstate_Config;
 
-		var dataChannel = this;
+		var dc = this;
 
 		// Map event MainLoop_Stop
-		this.eventEmitter.on(this.CONSTANTS.Events.MainLoop_Stop, function () {
-			clearInterval(dataChannel._mainLoop);
-			dataChannel.state = dataChannel.CONSTANTS.States.DCstate_Ready;
+		dc.eventEmitter.on(dc.CONSTANTS.Events.MainLoop_Stop, function () {
+			clearInterval(dc._mainLoop);
+			dc.state = dc.CONSTANTS.States.DCstate_Ready;
+			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStopped);
 		});
 	}
 
@@ -115,7 +178,7 @@ var DataChannel = function () {
 
 
 	_createClass(DataChannel, [{
-		key: 'initDataChannel',
+		key: "initDataChannel",
 		value: function initDataChannel() {
 
 			var dc = this;
@@ -126,20 +189,33 @@ var DataChannel = function () {
 		}
 
 		/**
+   * Close data channel
+   */
+
+	}, {
+		key: "closeDataChannel",
+		value: function closeDataChannel() {
+
+			var dc = this;
+
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
+				throw "Bad channel state";
+			}
+		}
+
+		/**
    * Start data channel
    */
 
 	}, {
-		key: 'startDataChannel',
+		key: "startDataChannel",
 		value: function startDataChannel() {
 
 			var dc = this;
 
-			if (dc.state !== dc.CONSTANTS.States.DCstate_Config || dc.state !== dc.CONSTANTS.States.DCstate_Stop) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
-
-			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStart); // Emit event ChannelStart
 		}
 
 		/**
@@ -147,24 +223,24 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'stopDataChannel',
+		key: "stopDataChannel",
 		value: function stopDataChannel() {
 
 			var dc = this;
 
-			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Working) {
 				throw "Bad channel state";
 			}
-
-			dc.eventEmitter.emit(dc.CONSTANTS.Events.ChannelStop); // Emit event ChannelStop
 		}
 
 		/**
    * Send message
+   *
+   * @param {object} msg - Message payload
    */
 
 	}, {
-		key: 'sendMessage',
+		key: "sendMessage",
 		value: function sendMessage(msg) {
 
 			var dc = this;
@@ -178,12 +254,12 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'mainLoop',
+		key: "mainLoop",
 		value: function mainLoop() {
 
 			var dc = this;
 
-			if (dc.state === dc.CONSTANTS.States.DCstate_Ready) {
+			if (dc.state !== dc.CONSTANTS.States.DCstate_Ready) {
 				throw "Bad channel state";
 			}
 
@@ -191,10 +267,14 @@ var DataChannel = function () {
 
 			dc._mainLoop = setInterval(function () {
 				if (dc.state === dc.CONSTANTS.States.DCstate_Working) {
-					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Tick); // Emit event MainLoop_Tick
+
+					// Emit event MainLoop_Tick
+					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Tick);
 				} else {
-						dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Stop); // Emit event MainLoop_Stop
-					}
+
+					// Emit event MainLoop_Stop
+					dc.eventEmitter.emit(dc.CONSTANTS.Events.MainLoop_Stop);
+				}
 			}, dc.config.loopTime);
 		}
 
@@ -203,7 +283,7 @@ var DataChannel = function () {
    */
 
 	}, {
-		key: 'stopMainLoop',
+		key: "stopMainLoop",
 		value: function stopMainLoop() {
 
 			var dc = this;
@@ -216,11 +296,43 @@ var DataChannel = function () {
 }();
 
 /**
+ * The SearchResult_ByTypeExtra result object.
+ * 
+ * @typedef {Object} SearchResult_ByTypeExtra
+ * @memberof st.net.DataChannelsManager
+ * @type Object
+ * @property {(st.net.DataMessage[]|null)} messages - The messages list, may be null.
+ * @property {number} numMessages - Number of messages.
+ * 
+ */
+
+/**
+ * The SearchResult_ByTypeExtra result object.
+ * 
+ * @typedef {Object} SearchResult_ByID
+ * @memberof st.net.DataChannelsManager
+ * @type Object
+ * @property {(st.net.DataChannel|null)} dataChannel - The Data channel, may be null.
+ * @property {number} position - Position in list.
+ * 
+ */
+
+/**
  * Data channels manager
+ *
+ * @class
+ * @memberof st.net
+ * @property {st.net.DataChannel[]} channelsList - Channels list
  */
 
 
 var DataChannelsManager = function () {
+
+	/**
+  *
+  * @constructs DataChannelsManager
+  */
+
 	function DataChannelsManager() {
 		_classCallCheck(this, DataChannelsManager);
 
@@ -232,15 +344,20 @@ var DataChannelsManager = function () {
 
 	/**
   * Get Data channel
+  *
+  * @param {object} config - Configuration object
+  * @returns {st.net.DataChannel}
   */
 
 
 	_createClass(DataChannelsManager, [{
-		key: 'addDataChannel',
+		key: "addDataChannel",
 
 
 		/**
    * Add data channel
+   * 
+   * @param {st.net.DataChannel} dch - Data channel object
    */
 		value: function addDataChannel(dch) {
 
@@ -262,10 +379,12 @@ var DataChannelsManager = function () {
 
 		/**
    * Remove data channel
+   * 
+   * @param {string} dchID - Data channel ID
    */
 
 	}, {
-		key: 'removeDataChannel',
+		key: "removeDataChannel",
 		value: function removeDataChannel(dchID) {
 
 			var dcm = this;
@@ -277,33 +396,38 @@ var DataChannelsManager = function () {
 
 			var dataChannel = dchSearch.dataChannel;
 
-			if (dataChannel.state === dcm.CONSTANTS.States.DCstate_Working) {
+			if (dataChannel.state !== dataChannel.CONSTANTS.States.DCstate_Config) {
 				throw "Bad channel state.";
 			}
 
 			dcm.channelsList.splice(dchSearch.position, 1);
 
-			dcm.eventEmitter.emit(dcm.CONSTANTS.Events.DataChannelRemoved, dchID); // Emit event DataChannelRemoved
+			// Emit event DataChannelRemoved
+			dcm.eventEmitter.emit(dcm.CONSTANTS.Events.DataChannelRemoved, dchID);
 		}
 
 		/**
    * Returns data channel searched by id
+   * 
+   * @param {string} dchID - Data channel ID
+   * @returns {st.net.DataChannelsManager.SearchResult_ByID}
    */
 
 	}, {
-		key: 'getDataChannelByID',
+		key: "getDataChannelByID",
 		value: function getDataChannelByID(dchID) {
 
 			var dcm = this;
 			var dch = null;
 
 			var _i = 0;
-			for (_i = 0; _i < dcm.channelsList.length; _i++) {
 
-				if (dcm.channelsList[_i].config.id === dchID) {
-					dch = dcm.channelsList[_i];
-					break;
-				}
+			_i = dcm.channelsList.map(function (x) {
+				return x.config.id;
+			}).indexOf(dchID);
+
+			if (_i !== -1) {
+				dch = dcm.channelsList[_i];
 			}
 
 			return {
@@ -312,12 +436,13 @@ var DataChannelsManager = function () {
 			};
 		}
 	}], [{
-		key: 'get_DataChannel',
+		key: "get_DataChannel",
 		value: function get_DataChannel(config) {
 
 			var dataChannel = null;
 
 			switch (config.type) {
+
 				case DataChannel_CONSTANTS.Config.DCtype_socketio:
 					var DC_SocketIO = require('./DC_SocketIO.js');
 					dataChannel = new DC_SocketIO(config);
@@ -332,10 +457,14 @@ var DataChannelsManager = function () {
 
 		/**
    * Returns Messages searched by Message.typeExtra
+   * 
+   * @param {string} typeExtra - Type extra
+   * @param {st.net.DataMessage[]} msgList - Message list
+   * @returns {st.net.DataChannelsManager.SearchResult_ByTypeExtra}
    */
 
 	}, {
-		key: 'getMessagesByTypeExtra',
+		key: "getMessagesByTypeExtra",
 		value: function getMessagesByTypeExtra(typeExtra, msgList) {
 
 			var messages = msgList.filter(function (msg, _i, _items) {
